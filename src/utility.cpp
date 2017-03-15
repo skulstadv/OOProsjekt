@@ -2,7 +2,9 @@
 #include <iostream>
 using namespace std;
 
-string getString(string& dst, string msg) {
+string getString(string& dst, string msg, int tabs) {
+    for (int i = 0; i < tabs; i++)
+        cout << '\t';
     cout << msg;
     cin >> dst;
     return dst;

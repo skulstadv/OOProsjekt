@@ -22,6 +22,7 @@ public:
     Nation* getNation(std::string s);
 
     // Removes nation with ID -s
+    // -return nullptr if no match
     Nation* removeNation(std::string s);
 
     // Displays all nations

@@ -50,6 +50,8 @@ void help() {
 void nationSwitch() {
     // The users choice
     string input;
+    // Stores the users choice of nation
+    string nation;
     // Loop until until input = 'Q'
     do {
         cout << "\n\tNations: \n\tN = New nation\n\tE = Change nation";
@@ -59,16 +61,32 @@ void nationSwitch() {
 
         // Nationswitch
         switch (input.at(0)) {
+        
+        // Creates a new nation. Asks user to write nation abbreviation
         case 'N':
-            // Creates a new nation. Asks user to write nation abbreviation
-            nations->addNation(new Nation(getNationAbbreviation(2))); break;
+            nations->addNation(new Nation(getNationAbbreviation(2)));
+            break;
+
+        // Edit nation
+        // Removes nation with abbreviation and creates new with same abberviation
+        case 'E':
+            getString(nation, "Write unique abbreviation: ", 2);
+            // Make sure nation exists
+            if (nations->getNation(nation) != nullptr) {
+                // Removes old
+                delete nations->removeNation(nation);
+                cout << "\t\tType new info: " << endl;
+                // Creates new with same name
+                nations->addNation(new Nation(nation));
+            }
+            break;
+
+        // Get nation by name from global nations variable
         case 'S':
-            // Get nation by name from global nations variable
-            string nation;
-            getString(nation, "\t\tWrite name: ");
+            getString(nation, "Write name: ", 2);
             // Make sure we found a nation; not nullptr
-            if (nations->getNation(nation) != nullptr)
-                nations->getNation(nation)->display();
+            nations->display(nation.c_str());
+            break;
         }
 
 

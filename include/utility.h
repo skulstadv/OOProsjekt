@@ -3,7 +3,8 @@
 #include <string>
 
 // Prints -msg to screen and reads from keyboard into -dst
-std::string getString(std::string& dst, std::string msg);
+// Inserts -tabs '\t' chars before printing message
+std::string getString(std::string& dst, std::string msg, int tabs);
 
 // Gets a number in interval -min to -max inclusive
 // Inserts -tabs '\t' chars before printing message

@@ -5,9 +5,9 @@ using namespace std;
 
 Nation::Nation(string s) : TextElement(s.c_str()) {
     nation_long = new string();
-    getString(*nation_long, "\t\tNation name: ");
+    getString(*nation_long, "Nation name: ", 2);
     contact_name = new string();
-    getString(*contact_name, "\t\tContact name: ");
+    getString(*contact_name, "Contact name: ", 2);
     contact_tel = getNumber(0, 1, 2);
     num_participants = 0;
 }
