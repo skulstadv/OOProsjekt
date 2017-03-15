@@ -1,24 +1,25 @@
 #include "../include/sport.h"
 using namespace std;
 
-Sport::Sport(string s)
-{
+
+Sport::Sport(string s) : TextElement(s.c_str()) {
+    // TODO
 }
 
-void Sport::addExercise(Exercise)
-{
+void Sport::addExercise(Exercise*) {
+    // TODO
 }
 
-Exercise Sport::getExercise(int n)
-{
-    return Exercise(0);
+Exercise* Sport::getExercise(int n) {
+    // TODO
+    return new Exercise(0);
 }
 
-Exercise Sport::removeExercise(int n)
-{
-    return Exercise(0);
+Exercise* Sport::removeExercise(int n) {
+    // TODO
+    return new Exercise(0);
 }
 
-void Sport::display()
-{
+void Sport::display() {
+    // TODO
 }

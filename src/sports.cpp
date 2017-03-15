@@ -1,16 +1,21 @@
 #include "../include/sports.h"
 using namespace std;
 
-void Sports::addSport(Sport)
-{
+
+Sports::Sports() {
+    sports = new List(Sorted);
 }
 
-Sport Sports::getSport(string s)
-{
-    return Sport("temp");
+void Sports::addSport(Sport*) {
+    // TODO
 }
 
-Sport Sports::removeSport(string s)
-{
-    return Sport("temp");
+Sport* Sports::getSport(string s) {
+    // TODO
+    return new Sport("temp");
+}
+
+Sport* Sports::removeSport(string s) {
+    // TODO
+    return new Sport("temp");
 }

@@ -1,5 +1,5 @@
 /* 
-|  FILE        :   ListTool2B.CPP
+|  FILE        :   listTool2B.CPP
 |
 |  AUTHOR      :   Frode Haug, NTNU
 |
@@ -29,7 +29,7 @@
 						//  INCLUDE:
 #include <iostream>						//  cout, cin
 #include <cstring>						//  strlen, strcmp
-#include "../include/ListTool2B.h"					//  Definition of classes.
+#include "../include/listTool2B.h"					//  Definition of classes.
 
 using namespace std;
 

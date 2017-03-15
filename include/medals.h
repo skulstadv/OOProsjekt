@@ -1,29 +1,26 @@
-#pragma once
 #ifndef OOProject_MEDALS_H_
 #define OOProject_MEDALS_H_
-#include <string>
-#include "ListTool2B.h"
+#include "listTool2b.h"
 #include "medal.h"
-using namespace std;
-
 
 // Containter class for medals
-class Medals { 
+class Medals {
 
-private:
     // All the medals won by text (nation abbreviation) in the olympic games
     List* medals;
 
-
 public:
+    // Constructor
+    Medals();
+
     // Add medal to linked list
-    void addMedal(Medal);
+    void addMedal(Medal*);
 
-    // Get medal by its unique string @s
-    Medal getMedal(string s);
+    // Get medal by its unique string -s
+    Medal* getMedal(std::string s);
 
-    // Removes medal for nation with name @s
-    Medal removeMedal(string s);
+    // Removes medal for nation with name -s
+    Medal* removeMedal(std::string s);
 };
 
 #endif

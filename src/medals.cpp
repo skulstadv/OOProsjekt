@@ -1,16 +1,21 @@
 #include "../include/medals.h"
 using namespace std;
 
-void Medals::addMedal(Medal)
-{
+
+Medals::Medals() {
+    medals = new List(Sorted);
 }
 
-Medal Medals::getMedal(string s)
-{
-    return Medal();
+void Medals::addMedal(Medal*) {
+    //TODO
 }
 
-Medal Medals::removeMedal(string s)
-{
-    return Medal();
+Medal* Medals::getMedal(string s) {
+    //TODO
+    return NULL;
+}
+
+Medal* Medals::removeMedal(string s) {
+    //TODO
+    return NULL;
 }

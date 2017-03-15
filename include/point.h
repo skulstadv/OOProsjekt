@@ -1,20 +1,22 @@
-#pragma once
 #ifndef OOProject_POINT_H_
 #define OOProject_POINT_H_
-using namespace std;
+#include "listTool2B.h"
+#include <string>
 
 
-class Point {
+// Represents the point for a given nation
+class Point : public TextElement {
 
 private:
     // Total points won by nation TextElement.text
     int num_points;
 
-
 public:
-    int getPoints() {
-        return num_points;
-    }
+    // Constructor
+    Point(std::string s);
+
+    // return points of this nation
+    int getPoints();
 };
 
 #endif

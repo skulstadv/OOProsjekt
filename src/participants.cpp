@@ -1,21 +1,25 @@
 #include "../include/participants.h"
 using namespace std;
 
-void Participants::addParticipant(Participant)
-{
+
+Participants::Participants() {
+    participants = new List(Sorted);
 }
 
-Participant Participants::getParticipant(int n)
-{
-    return Participant("temp");
+void Participants::addParticipant(Participant*) {
+    //TODO
 }
 
-Participant Participants::removeParticipant(int n)
-{
-    return Participant("temp");
+Participant* Participants::getParticipant(int n) {
+    //TODO
+    return new Participant(0);
 }
 
-void Participants::displayParticipant(string s)
-{
+Participant* Participants::removeParticipant(int n) {
+    //TODO
+    return new Participant(0);
 }
 
+void Participants::displayParticipant(string s) {
+    //TODO
+}

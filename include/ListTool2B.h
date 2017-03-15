@@ -1,5 +1,5 @@
 /* 
-|  FILE        :   ListTool2B.h
+|  FILE        :   listTool2B.h
 |
 |  AUTHOR      :   Frode Haug, NTNU
 |
@@ -27,7 +27,7 @@
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 */       
 
-#if !defined(__LISTTOOL2B_H)           //  Ensures that this file will be
+#ifndef __LISTTOOL2B_H           //  Ensures that this file will be
 #define __LISTTOOL2B_H                 //    included only ONCE in each file.
 
 
