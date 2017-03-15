@@ -1,0 +1,38 @@
+N = Nation
+NN	nations->addNation(Nation nation)
+NE	nations->getNation(String name)
+NA	nations->display()
+NT	nations->getNation(String name)->displayParticipants()
+NS	nations->display(String name)
+
+D = Participant
+DN	participants->addParticipant(Participant participant)
+DE
+DA
+DS
+
+G = Sport
+GN
+GE
+GA
+GS
+
+O = Sport->Exercise
+ON	
+OE
+OF
+OA
+
+O	L = Sport->Exercise->Participants
+O	LS
+O	LN
+O	LE
+O	LF
+O	R = Sport->Exercise->Statistics
+O	RS
+O	RN
+O	RF
+
+M
+P
+X
