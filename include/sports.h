@@ -1,29 +1,26 @@
-#pragma once
 #ifndef OOProject_SPORTS_H_
 #define OOProject_SPORTS_H_
-#include <string>
-#include "ListTool2B.h"
+#include "listTool2B.h"
 #include "sport.h"
-using namespace std;
-
 
 // Container class for all sports
 class Sports { 
 
-private:
     // All the sports in the olympic games
     List* sports;
 
-
 public:
+    // Constructor
+    Sports();
+
     // Add sport to linked list
-    void addSport(Sport);
+    void addSport(Sport* sport);
 
-    // Get sport by its unique string @s
-    Sport getSport(string s);
+    // Get sport by its unique string -s
+    Sport* getSport(std::string s);
 
-    // Removes sport with ID @s
-    Sport removeSport(string s);
+    // Removes sport with ID -s
+    Sport* removeSport(std::string s);
 
 };
 

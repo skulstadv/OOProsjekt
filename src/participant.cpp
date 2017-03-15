@@ -1,10 +1,11 @@
 #include "../include/participant.h"
 using namespace std;
 
-Participant::Participant(string s)
-{
+
+Participant::Participant(int n) : NumElement(n) {
+    //TODO
 }
 
-void Participant::display()
-{
+void Participant::display() {
+    //TODO
 }

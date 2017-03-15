@@ -1,32 +1,35 @@
-#pragma once
 #ifndef OOProject_MEDAL_H_
 #define OOProject_MEDAL_H_
-using namespace std;
+#include "utility.h"
+#include "listTool2B.h"
 
 
-class Medal {
+class Medal : public TextElement {
 
-private:
-    // Gold medals won by nation with TextElement.text name
-    int gold;
+// Gold medals won by nation with TextElement.text name
+int gold;
 
-    // Silver medals won by nation with TextElement.text name
-    int silver;
-    
-    // Bronze medals won by nation with TextElement.text name
-    int bronze;
+// Silver medals won by nation with TextElement.text name
+int silver;
+
+// Bronze medals won by nation with TextElement.text name
+int bronze;
 
 
 public:
-    int getGold() {
-        return gold;
-    }
-    int getSilver() {
-        return silver;
-    }
-    int getBronze() {
-        return bronze;
-    }
+    Medal();
+
+    // Constructor
+    Medal(std::string s);
+
+    // -return gold medals for nation
+    int getGold();
+
+    // -return silver medals for nation
+    int getSiver();
+
+    // -return bronze medals for nation
+    int getBronze();
 };
 
 #endif

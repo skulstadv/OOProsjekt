@@ -1,16 +1,21 @@
 #include "../include/points.h"
 using namespace std;
 
-void Points::addPoint(Point)
-{
+
+Points::Points() {
+    points = new List(Sorted);
 }
 
-Point Points::getpoint(string s)
-{
-    return Point();
+void Points::addPoint(Point*) {
+    // TODO
 }
 
-Point Points::removepoint(string s)
-{
-    return Point();
+Point* Points::getpoint(string s) {
+    // TODO
+    return new Point("");
+}
+
+Point* Points::removepoint(string s) {
+    // TODO
+    return new Point("");
 }
