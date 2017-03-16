@@ -72,11 +72,6 @@ bool Exercise::addParticipantID(int n) {
     return false;
 }
 
-Participant* Exercise::getParticipant(int n) {
-    //TODO
-    return new Participant(0);
-}
-
 bool Exercise::removeParticipantID(int n) {
     if ((participants_id->inList(n))) {
         participants_id->destroy(n);
