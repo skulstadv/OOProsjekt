@@ -13,7 +13,7 @@ Nation::Nation(string s) : TextElement(s.c_str()) {
     // Get contact name from user
     getLine(*contact_name, "Contact name: ", 2);
     // Get telephone number from user
-    contact_tel = getInt(0, 1, 2);
+    contact_tel = getInt(11111111, 99999999,2,"Enter the Phone number of the contact: ");
     num_participants = 0;
 }
 

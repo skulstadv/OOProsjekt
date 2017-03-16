@@ -7,11 +7,11 @@ using namespace std;
 Participant::Participant(int n) : NumElement(n) {
     name = new string();
     // Get name of participant from user
-    getLine(*name, "Write name of participant: ", 2);
+    getLine(*name, "Enter name of participant: ", 2);
     // Get nation affiliation of participant from user
     nation_short = getNationAbbreviation(2);
     // Get gender from user
-    isFemale = (getInt(0, 1, 2, "Is it a female? ") == 1);
+    isFemale = (getInt(0, 1, 2, "Is the participant a female? ") == 1);
 }
 
 void Participant::display() {
@@ -23,6 +23,7 @@ void Participant::display() {
     else
         cout << "Female\n\n";
 }
+
 
 int Participant::getNumber() {
     return number;

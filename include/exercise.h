@@ -44,5 +44,10 @@ public:
     // Remove participant with ID -n from this exercise 
     // -return true if participant was removed
     bool removeParticipantID(int n);
+    
+    //Checks for valid date, takes day, month and year as parameters
+    bool Exercise::checkdate(int day, int month, int year);
+    //checks given year for leapyear, takes year as parameter
+    bool Exercise::leapYear(int year);
 };
 #endif
