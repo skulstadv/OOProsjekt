@@ -23,7 +23,7 @@ public:
     Sport(std::string s);
 
     // Add exercise to exercises list
-    void addExercise(Exercise*);
+    void addExercise(Exercise* exercise);
 
     // Get exercise with ID -n in exercises list
     // -return the Exercise
@@ -35,6 +35,12 @@ public:
 
     // Display this exercises data
     void display();
+
+    // Returns unique name of sport
+    std::string getName();
+
+    // Set sport name
+    void setSportName(std::string s);
 };
 
 #endif

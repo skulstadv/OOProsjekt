@@ -15,7 +15,8 @@ public:
     Nations();
 
     // Add nation to linked list
-    void addNation(Nation* nation);
+    // -return true if nation abbreviation unique and addition succesfull
+    bool addNation(Nation* nation);
 
     // Get nation by its unique string -s
     // -return nullptr if no match

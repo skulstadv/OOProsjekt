@@ -1,4 +1,5 @@
 #include "../include/sports.h"
+#include <iostream>
 using namespace std;
 
 
@@ -6,16 +7,25 @@ Sports::Sports() {
     sports = new List(Sorted);
 }
 
-void Sports::addSport(Sport*) {
-    // TODO
+bool Sports::addSport(Sport* sport) {
+    if (sports->inList(sport->getName().c_str()))
+        return false;
+    // Sport has unique name, adding to list
+    sports->add(sport);
+    return true;
 }
 
 Sport* Sports::getSport(string s) {
-    // TODO
-    return new Sport("temp");
+    Sport* sport = (Sport*)sports->remove(s.c_str());
+    sports->add(sport);
+    return sport;
 }
 
 Sport* Sports::removeSport(string s) {
-    // TODO
-    return new Sport("temp");
+    Sport* sport = (Sport*)sports->remove(s.c_str());
+    return sport;
+}
+
+void Sports::display() {
+    sports->displayList();
 }

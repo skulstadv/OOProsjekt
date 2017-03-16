@@ -65,6 +65,7 @@ class NumElement: public Element  {    //  Base class for all numeric
     NumElement();                      //  Needs and reads the ID-number.
     NumElement(int no);                //  Created with an ID.
     virtual int compare(Element* el);  //  Compares own number with  el's.
+    virtual int getNumber() { return number; } //  Returns the number of this numelement
 };
 
 
@@ -115,6 +116,7 @@ class List  {                          //  The class 'List'.
     Element* remove();                  //      X               
     Element* remove(int no);            //                 X
     Element* remove(const char* t);     //                             X
+    // Returns element at position n      
     Element* removeNo(int n);           //                 X           X
     bool destroy();                     //      X   
     bool destroy(int no);               //                 X

@@ -14,13 +14,17 @@ public:
     Sports();
 
     // Add sport to linked list
-    void addSport(Sport* sport);
+    // -return true if successfully added
+    bool addSport(Sport* sport);
 
     // Get sport by its unique string -s
     Sport* getSport(std::string s);
 
     // Removes sport with ID -s
     Sport* removeSport(std::string s);
+
+    // Display all sports
+    void display();
 
 };
 

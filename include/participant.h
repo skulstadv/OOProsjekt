@@ -11,16 +11,24 @@ class Participant : public NumElement {
     // Nation abbreviation
     std::string* nation_short;
     // Gender of participant 0 = man, 1 = woman
-    bool gender;
+    bool isFemale;
 
 public:
-    Participant();
 
     // Constructor, -n is a unique number for this participant
     Participant(int n);
 
     // Display this participants data
     void display();
+
+    // Returns number for this participant
+    int getNumber();
+
+    // Get this participants nation abbreviation
+    std::string* getNationName();
+
+    // Get this participants name
+    std::string* getName();
 
 };
 #endif

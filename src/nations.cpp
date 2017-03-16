@@ -7,14 +7,26 @@ Nations::Nations() {
     nations = new List(Sorted);
 }
 
-void Nations::addNation(Nation* nation) {
+bool Nations::addNation(Nation* nation) {
+    // Dont want to add nullptr
+    if (nation == nullptr) {
+        // Debug
+        cout << "Tried adding Nation* nullptr.. you dont wanna do that.\n";
+        return false;
+    }
+    // Return false if the nation abbreviation is in use
+    if (nations->inList(nation->getName().c_str()))
+        return false;
+    // Everything seems to be ok
     nations->add(nation);
+    return true;   
 }
 
 Nation* Nations::getNation(string s) {
     Nation* nation = (Nation*)nations->remove(s.c_str());
     // Make sure nation exists
     if (nation == nullptr) {
+        // Debug
         cout << "\t\tCouldn't find nation with " << s << " abbreviation." << endl;
         return nullptr;
     }
@@ -39,7 +51,7 @@ void Nations::display(string s) {
         return;
     }
     // Nation is good -> display it
-    nations->displayElement(s.c_str());
+    nation->display();
     // Done with object, adding back to list
     nations->add(nation);
 }

@@ -10,7 +10,7 @@ class Exercise : public NumElement {
 
     // Linked sorted list containing ID of participants for 
     // global participants list
-    List* participants;
+    List* participants_id;
 
     // Name of exercise
     std::string* name;
@@ -22,7 +22,6 @@ class Exercise : public NumElement {
     int date;
 
 public:
-    Exercise();
 
     // Constructor
     // Creates a new Exercise object with unique ID -n

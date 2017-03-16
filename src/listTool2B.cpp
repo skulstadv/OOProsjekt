@@ -301,7 +301,7 @@ Element* List::remove(const char* t) { //    ID='t' in a text sorted list:
   return eptr;                          //  Returns element or nullptr.   
 }
 
-				                   //  Returns (if possible) element no.
+                                        //  Returns (if possible) element no.
 Element* List::removeNo(int n)  {  //    'n' in a num/text sorted list:
   Element* eptr = nullptr;            //  Pointer to the removed element.
   Node*  removeNode;                  //  Node that will be removed.
@@ -519,5 +519,5 @@ void List::displayList()  {    //    arbitrary list:
      for (int i = 1;  i <= noInList;  i++, current = current->next)
 	     current->liElem->display();   //  Display element.
   }                                    //  Display number of elements:
-  cout << "\n\tNumber of elements in the list:  " << noInList;
+  //cout << "\n\tNumber of elements in the list:  " << noInList;
 }

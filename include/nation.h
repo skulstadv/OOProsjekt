@@ -9,7 +9,9 @@ class Nation : public TextElement {
 
     // A list of IDs of participants belonging to this nation
     // This is just a linked list of integers (NumElements)
-    List* participants;
+    // The actual participant can be retrieved with 
+    // participants->remove(participants_id->removeNo(x)->number)
+    List* participants_id;
 
     // Full name of this nation
     std::string* nation_long;
@@ -33,7 +35,7 @@ public:
 
     // Inserts participant ID into list of participant IDs
     // -return true if ID successfully added to list
-    bool addParticipantID(Participant* participant);
+    bool addParticipantID(int id);
 
     // Retrieves the participant object with ID -n from 
     // global participants array

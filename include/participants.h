@@ -15,7 +15,8 @@ public:
     Participants();
 
     // Add participant to linked list
-    void addParticipant(Participant*);
+    // -return true if successfull (id unique)
+    bool addParticipant(Participant* participant);
 
     // Get participant by its ID -n
     Participant* getParticipant(int n);
@@ -25,6 +26,9 @@ public:
 
     // Display participant with name containing or matching -s
     void displayParticipant(std::string s);
+
+    // Displays all participants
+    void display();
 
 };
 
