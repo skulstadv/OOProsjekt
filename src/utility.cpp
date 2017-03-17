@@ -55,3 +55,34 @@ string* getNationAbbreviation(int tabs) {
     (*ret)[2] = toupper((*ret).at(2));
     return ret;
 }
+
+bool checkdate(int day, int month, int year) {
+
+    //  Set date for day in given month
+    //  Value for february is set later
+    int daysPerMonth[12] = { 31, 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    int totalDays, i;
+
+    if (year < 2016 || year > 2100) return 0;    //  Illegal year.
+    if (month < 1 || month > 12)   return 0;     //  illegal month.
+                                                 //  Value for february is set  if leapyear
+    daysPerMonth[1] = (leapYear(year)) ? 29 : 28;
+    if (day < 1 || day > daysPerMonth[month - 1])  return 0;  // illegal day
+                                                          // Guaranteed legal date
+    totalDays = day;
+    for (i = 0; i < month - 1; i++)              // calculate daynumber of day
+        totalDays += daysPerMonth[i];
+
+    if (totalDays)
+        return true;
+    else
+        return false;
+}
+
+bool leapYear(int year) {
+
+    //check if a given year is a leapyear
+                      //  leapyear if abel to divide by 400 or 
+                      //   able to divide by 4 but not 100
+    return ((year % 400 == 0) || ((year % 4 == 0) && (year % 100) != 0));
+}

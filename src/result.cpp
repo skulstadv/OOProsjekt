@@ -1,7 +1,8 @@
-#include "..\include\result.h"
+#include "../include/result.h"
 using namespace std;
 
-Result::Result(int n): NumElement(n) {
+
+Result::Result(int n) : NumElement(n){
     participant_id = n;
 }
 

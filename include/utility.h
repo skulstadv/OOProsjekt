@@ -22,5 +22,10 @@ void getChar(std::string& dst);
 // Inserts -tabs '\t' chars before printing message
 std::string* getNationAbbreviation(int tabs);
 
+// Checks for valid date, takes day, month and year as parameters
+bool checkdate(int day, int month, int year);
+
+// Checks given year for leapyear, takes year as parameter
+bool leapYear(int year);
 
 #endif

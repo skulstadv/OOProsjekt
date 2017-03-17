@@ -1,18 +1,22 @@
 #ifndef OOProject_RESULT_H_
 #define OOProject_RESULT_H_
+#include "listTool2B.h"
 
-class Result : public NumElement() {
 
-    // Participant id 
-    int participant_id;
+class Result : public NumElement {
+
+// Participant this result describes. Contains id in global participants var
+int participant_id;
 
 public: 
-    // Constructor
-    Result(int n) : NumElement(n);
+    Result();
 
-    // returns num element
+    // Constructor
+    Result(int n);
+
+    // returns the value of this result (aka 16pts for gold, 15 for bronze)
     int getParticipantID();
-}
+};
 
 
 

@@ -12,6 +12,11 @@ class Exercise : public NumElement {
     // global participants list
     List* participants_id;
 
+    // Linked sorted list containing all results
+    // Sorted after results (ascending). Gold winner will be last
+    // person in list. Get participant with result->getParticipantID
+    List* results;
+
     // Name of exercise
     std::string* name;
 
@@ -40,10 +45,8 @@ public:
     // Remove participant with ID -n from this exercise 
     // -return true if participant was removed
     bool removeParticipantID(int n);
-    
-    //Checks for valid date, takes day, month and year as parameters
-    bool Exercise::checkdate(int day, int month, int year);
-    //checks given year for leapyear, takes year as parameter
-    bool Exercise::leapYear(int year);
+
+    // Returns the list with results
+    List* getResultsList();
 };
 #endif
