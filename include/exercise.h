@@ -37,10 +37,6 @@ public:
     // -return true if successfull
     bool addParticipantID(int n);
 
-    // Get participant with ID -n from global participants list
-    // -return the participant object removed from global participants list
-    Participant* getParticipant(int n);
-
     // Remove participant with ID -n from this exercise 
     // -return true if participant was removed
     bool removeParticipantID(int n);

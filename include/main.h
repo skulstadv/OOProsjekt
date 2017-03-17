@@ -8,11 +8,11 @@
 
 
 // Global variables
-static Participants* participants;
-static Sports* sports;
-static Nations* nations;
-static Medals* medals;
-static Points* points;
+extern Participants* participants;
+extern Sports* sports;
+extern Nations* nations;
+extern Medals* medals;
+extern Points* points;
 
 
 // Prints helpmessage for main switch

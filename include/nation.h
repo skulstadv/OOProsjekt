@@ -3,6 +3,7 @@
 #include <string>
 #include "listTool2B.h"
 #include "participant.h"
+#include "participants.h"
 
 // A nation - Contains list of participants and contact info for one person
 class Nation : public TextElement {

@@ -1,5 +1,6 @@
 #include "../include/nation.h"
 #include "../include/utility.h"
+#include "../include/participants.h"
 #include "../include/main.h"
 #include <iostream>
 using namespace std;
@@ -64,8 +65,12 @@ void Nation::displayParticipants() {
         // Get participant id <i> from participants_id list
         participant_id = (NumElement*)participants_id->removeNo(i);
         participants_id->add(participant_id);
+        //
+        int temp_id = participant_id->getNumber();
         // Display the participant with this ID
-        participants->getParticipant(participant_id->getNumber())->display();
+        Participant* part;
+        part = participants->getParticipant(temp_id);
+        part->display();
     }
 }
 

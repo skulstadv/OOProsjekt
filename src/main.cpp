@@ -9,15 +9,14 @@
 #include <iostream>
 using namespace std;
 
+// Initializing global variables
+Participants* participants = new Participants();
+Sports* sports = new Sports();
+Nations* nations = new Nations();
+Medals* medals = new Medals();
+Points* points = new Points();
 
 int main() {
-    // Initializing global variables
-    participants = new Participants();
-    sports = new Sports();
-    nations = new Nations();
-    medals = new Medals();
-    points = new Points();
-
     // The users choice
     string input;
 
@@ -58,7 +57,8 @@ void nationSwitch() {
         cout << "\n\tNations: \n\tN = New nation\n\tE = Change nation";
         cout << "\n\tA = Display data about all nations";
         cout << "\n\tT = Display this nations participants";
-        cout << "\n\tS = Display all data for specified nation\n\t";
+        cout << "\n\tS = Display all data for specified nation ";
+        cout << "(except participants)\n\t";
         getChar(input);
         switch (input.at(0)) {
             // Creates a new nation. Asks user to write nation abbreviation
@@ -88,7 +88,6 @@ void nationSwitch() {
             nation = *getNationAbbreviation(2);
             if (nations->getNation(nation) != nullptr) {
                 nations->getNation(nation)->displayParticipants(); // THIS ONE IS FUCKED, FIX
-                participants->getParticipant(1)->display();
             }
             break;
             // Displays all data about all nations
