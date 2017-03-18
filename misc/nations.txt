@@ -1,0 +1,12 @@
+nation_short
+(nations->noOfElements)
+(participants_id->noOfElements) 1, 2, 3 ... n
+nation_long
+contact_name
+contact_tel num_participants
+int
+str
+int int int int int int 
+str
+str
+int int 
