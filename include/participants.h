@@ -30,6 +30,9 @@ public:
     // Displays all participants
     void display();
 
+    // Return the number of participants
+    int getNumParticipants();
+
 };
 
 #endif

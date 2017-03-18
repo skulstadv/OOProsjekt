@@ -23,8 +23,9 @@ void Sport::addExercise(Exercise* exercise) {
 
 Exercise* Sport::getExercise(int n) {
     Exercise* exercise = (Exercise*)exercises->remove(n);
-    // Add it back to list before returning it
-    addExercise(exercise);
+    // Add it back to list if its not null before returning it
+    if (exercise != nullptr)
+        addExercise(exercise);
     return exercise;
 }
 

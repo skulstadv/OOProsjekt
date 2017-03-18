@@ -6,7 +6,6 @@
 #include "../include/medals.h"
 #include "../include/points.h"
 
-
 // Global variables
 extern Participants* participants;
 extern Sports* sports;
@@ -29,5 +28,14 @@ void sportSwitch();
 
 // Switch for editing/creating exercises
 void exerciseSwitch();
+
+// Switch for editing/creating participant lists
+void exerciseSwitchParticipants(Exercise* exercise);
+
+// Switch for editing/creating results lists
+void exerciseSwitchResults(Exercise* exercise);
+
+// Reads participants from file into an exercise
+void readParticipantsFromFile(Exercise* exercise);
 
 #endif

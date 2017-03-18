@@ -48,5 +48,20 @@ public:
 
     // Returns the list with results
     List* getResultsList();
+
+    // Returns the list of participants
+    List* getParticipantsIDList();
+
+    // Self explanatory
+    void setName();
+
+    // Self explanatory
+    void setDate();
+
+    // Self explanatory
+    void setTime();
+
+    // Returns name of exercise
+    std::string getName();
 };
 #endif

@@ -1,3 +1,4 @@
+#include "../include/main.h"
 #include "../include/exercise.h"
 #include "../include/participant.h"
 #include "../include/ListTool2B.h"
@@ -12,10 +13,10 @@ Exercise::Exercise(int n) : NumElement(n) {
     name = new string();                //define name
     int day, month, year;
     // Get name of participant from user
-    getLine(*name, "Enter name of the Excersise: ", 2);
+    getLine(*name, "Enter name of the Excercise: ", 2);
 
-    // Get the time of the excersise from the user
-    int hour = getInt(0, 23, 2, "Enter the time of the excersise\n\t\tHour: ");
+    // Get the time of the excercise from the user
+    int hour = getInt(0, 23, 2, "Enter the time of the excercise\n\t\tHour: ");
     int minute = getInt(0, 59, 2, "Minute: ");
 
     //Sets the time
@@ -24,7 +25,7 @@ Exercise::Exercise(int n) : NumElement(n) {
     //gets the date from the user
     //loops while date is illegal
     do {
-        day = getInt(1, 31, 2, "Enter the time of the excersise\n\t\tDay: ");
+        day = getInt(1, 31, 2, "Enter the time of the excercise\n\t\tDay: ");
         month = getInt(1, 12, 2, "Month: ");
         year = getInt(2016, 2100, 2, "Year: ");
         if (checkdate(day, month, year) == 0) {
@@ -36,9 +37,9 @@ Exercise::Exercise(int n) : NumElement(n) {
 }
 
 void Exercise::display() {
-    cout << "Name of the Excersise: " << name << '\n';
-    cout << "Date: " << date << '\n';
-    cout << "Time: ";
+    cout << "\t\tName of the excercise: " << *name << '\n';
+    cout << "\t\tDate: " << date << '\n';
+    cout << "\t\tTime: ";
     //cout additional zero if hour is between 00 and 12
     if ((time_of_day % 10000) < 1000) {
         cout << "0";
@@ -52,37 +53,63 @@ void Exercise::display() {
 
 
 void Exercise::displayParticipants() {
-    Participant* temp;
-    //Gets number of elements in ist
-    int i = participants_id->noOfElements();
-    if (i != 0) {
-        for (int j = 1; j <= i; j++) {
-            temp = (Participant*)participants_id->removeNo(j);
-            temp->display();
-            participants_id->add(temp);
-        }
+    int id;
+    // participants_id list exists of NumElements. Temp for our ne
+    NumElement* ne;
+    // Listtool origin index = 1 (!)
+    for (int i = 1; i <= participants_id->noOfElements(); i++) {
+        ne = (NumElement*)participants_id->removeNo(i);
+        id = ne->getNumber();
+        participants->getParticipant(id)->display();
+        participants_id->add(ne);
     }
-    else(cout << "There are no participants listed for this excersise!");
 }
 
 bool Exercise::addParticipantID(int n) {
-    Participant* temp;
-    if (!(participants_id->inList(n))) {
-        temp = new Participant(n);
-        participants_id->add(temp);
-        return true;
-    }
-    return false;
+    NumElement* temp;
+    temp = new NumElement(n);
+    return participants_id->add(temp);
 }
 
 bool Exercise::removeParticipantID(int n) {
-    if ((participants_id->inList(n))) {
-        participants_id->destroy(n);
-        return true;
-    }
-    return false;
+    return (participants_id->remove(n) != nullptr);
 }
 
-List * Exercise::getResultsList() {
+List* Exercise::getResultsList() {
     return results;
+}
+
+List* Exercise::getParticipantsIDList() {
+    return participants_id;
+}
+
+void Exercise::setName() {
+    getLine(*name, "Enter name of the Excercise: ", 2);
+}
+
+void Exercise::setDate() {
+    int day, month, year;
+    do {
+        day = getInt(1, 31, 2, "Enter the date of the excercise\n\t\tDay: ");
+        month = getInt(1, 12, 2, "Month: ");
+        year = getInt(2016, 2100, 2, "Year: ");
+        if (checkdate(day, month, year) == 0) {
+            cout << "Please enter a valid date!\n\n";
+        }
+
+    } while (checkdate(day, month, year) == 0);
+    date = ((year * 10000) + (month * 100) + (day));
+}
+
+void Exercise::setTime() {
+    // Get the time of the excercise from the user
+    int hour = getInt(0, 23, 2, "Enter the time of the excercise\n\t\tHour: ");
+    int minute = getInt(0, 59, 2, "Minute: ");
+
+    //Sets the time
+    time_of_day = ((hour * 100) + minute);
+}
+
+string Exercise::getName() {
+    return *name;
 }

@@ -25,8 +25,6 @@ bool Participants::addParticipant(Participant* participant) {
 Participant* Participants::getParticipant(int n) {
     Participant* ret = (Participant*)participants->remove(n);
     if (ret == nullptr) {
-        // Debug
-        cout << "Participant id returned nullptr\n";
         return nullptr;
     }
     // Put it back in list before returning pointer 
@@ -56,4 +54,8 @@ void Participants::displayParticipant(string s) {
 
 void Participants::display() {
     participants->displayList();
+}
+
+int Participants::getNumParticipants() {
+    return participants->noOfElements();
 }

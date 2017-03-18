@@ -17,7 +17,9 @@ bool Sports::addSport(Sport* sport) {
 
 Sport* Sports::getSport(string s) {
     Sport* sport = (Sport*)sports->remove(s.c_str());
-    sports->add(sport);
+    // Only add the sport if it actually exists
+    if (sport != nullptr)
+        sports->add(sport);
     return sport;
 }
 
