@@ -40,6 +40,7 @@ public:
 
     // Insert participant with ID -n in participants list
     // -return true if successfull
+    // -return false if participant ID already in list
     bool addParticipantID(int n);
 
     // Remove participant with ID -n from this exercise 

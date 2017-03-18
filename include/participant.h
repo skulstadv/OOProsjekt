@@ -2,6 +2,7 @@
 #define OOProject_PARTICIPANT_H_
 #include "listTool2B.h"
 #include <string>
+#include <fstream>
 
 // A participant in the olympics
 class Participant : public NumElement {
@@ -30,5 +31,10 @@ public:
     // Get this participants name
     std::string* getName();
 
+    // Write class to file
+    void writeToFile(std::ofstream& out);
+
+    // Read class from file
+    void readFromFile(std::ifstream& in);
 };
 #endif

@@ -48,6 +48,14 @@ string Sport::getName() {
     return text;
 }
 
-    void Sport::setSportName(string s) {
-        strcpy_s(text, s.size()+1, s.c_str());
+void Sport::setSportName(string s) {
+    strcpy_s(text, s.size() + 1, s.c_str());
+}
+
+void Sport::writeToFile(std::ofstream& out) {
+    //TODO
+}
+
+void Sport::readFromFile(std::ifstream & in) {
+    //TODO
 }

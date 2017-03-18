@@ -36,3 +36,11 @@ string* Participant::getNationName() {
 std::string* Participant::getName() {
     return name;
 }
+
+void Participant::writeToFile(ofstream& out) {
+    //TODO
+}
+
+void Participant::readFromFile(std::ifstream & in) {
+    //TODO
+}

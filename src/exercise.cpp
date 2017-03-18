@@ -67,6 +67,9 @@ void Exercise::displayParticipants() {
 
 bool Exercise::addParticipantID(int n) {
     NumElement* temp;
+    if (results->inList(n))
+        // Return false if it already is in list
+        return false;
     temp = new NumElement(n);
     return participants_id->add(temp);
 }

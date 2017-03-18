@@ -12,10 +12,13 @@ public:
     Result();
 
     // Constructor
-    Result(int n);
+    Result(int result, int id);
 
     // returns the value of this result (aka 16pts for gold, 15 for bronze)
     int getParticipantID();
+
+    // Displays this result
+    void display();
 };
 
 

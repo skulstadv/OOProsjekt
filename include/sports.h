@@ -2,6 +2,7 @@
 #define OOProject_SPORTS_H_
 #include "listTool2B.h"
 #include "sport.h"
+#include <fstream>
 
 // Container class for all sports
 class Sports { 
@@ -26,6 +27,17 @@ public:
     // Display all sports
     void display();
 
+    // Returns number of sports in the list
+    int getNumber();
+
+    // Returns list
+    List* getList();
+
+    // Write class to file
+    void writeToFile(std::ofstream& out);
+
+    // Read class from file
+    void readFromFile(std::ifstream& in);
 };
 
 #endif

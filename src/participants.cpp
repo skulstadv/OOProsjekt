@@ -1,5 +1,6 @@
 #include "../include/participants.h"
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 
@@ -59,3 +60,32 @@ void Participants::display() {
 int Participants::getNumParticipants() {
     return participants->noOfElements();
 }
+
+int Participants::getNumber() {
+    return participants->noOfElements();
+}
+
+List * Participants::getList() {
+    return participants;
+}
+
+void Participants::writeToFile(ofstream& out) {
+    int num = participants->noOfElements();
+    out << num << endl;
+    Participant* participant;
+    for (int i = 1; i <= num; i++) {
+        participant = (Participant*)participants->removeNo(i);
+        participant->writeToFile(out);
+        participants->add(participant);
+    }
+}
+
+void Participants::readFromFile(std::ifstream & in) {
+    int num = participants->noOfElements();
+    Participant* nation;
+    for (int i = 0; i < num; i++) {
+        nation = (Participant*)participants->removeNo(1);
+    }
+    // TODO
+}
+

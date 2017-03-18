@@ -2,6 +2,7 @@
 #define OOProject_SPORT_H_
 #include "listTool2B.h"
 #include "exercise.h"
+#include <fstream>
 
 
 // The way the sport is scored
@@ -41,6 +42,12 @@ public:
 
     // Set sport name
     void setSportName(std::string s);
+
+    // Write class to file
+    void writeToFile(std::ofstream& out);
+
+    // Read class from file
+    void readFromFile(std::ifstream& in);
 };
 
 #endif
