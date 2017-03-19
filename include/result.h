@@ -14,6 +14,9 @@ public:
     // Constructor
     Result(int result, int id);
 
+    // Deconstructor
+    ~Result();
+
     // returns the value of this result (aka 16pts for gold, 15 for bronze)
     int getParticipantID();
 

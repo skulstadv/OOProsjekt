@@ -48,7 +48,7 @@ public:
     Participant* getParticipant(int n);
 
     // Remove participant with ID -n from participants list
-    Participant* removeParticipant(int n);
+    void removeParticipantID(int n);
 
     // -return the nation_long name of this nation
     std::string getName();

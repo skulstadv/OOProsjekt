@@ -28,7 +28,6 @@ Sport::Sport(std::string s, std::ifstream & in) : TextElement(s.c_str()) {
         // Ignore --------Exercise-------- line
         in.ignore();
         getline(in, dump);
-        cout << "\t\tAdding exercise with id: " << exercise_id << endl;
         exercises->add(new Exercise(exercise_id, in));
         // Ignore --------Exercise-------- end line
         in.ignore();
@@ -64,7 +63,7 @@ Exercise* Sport::getExercise(int n) {
     Exercise* exercise = (Exercise*)exercises->remove(n);
     // Add it back to list if its not null before returning it
     if (exercise != nullptr)
-        addExercise(exercise);
+        exercises->add(exercise);
     return exercise;
 }
 

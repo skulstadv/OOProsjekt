@@ -7,6 +7,9 @@ Result::Result(int result, int id) : NumElement(result) {
     participant_id = id;
 }
 
+Result::~Result() {
+}
+
 int Result::getParticipantID() {
     return participant_id;
 }

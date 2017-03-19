@@ -66,7 +66,7 @@ public:
     void setTime();
 
     // Returns name of exercise
-    std::string getName();
+    std::string* getName();
 
     // Writes exercise to file
     void writeToFile(std::ofstream& out);

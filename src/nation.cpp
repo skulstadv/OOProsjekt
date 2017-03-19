@@ -53,12 +53,10 @@ Participant* Nation::getParticipant(int n) {
     return participant;
 }
 
-Participant* Nation::removeParticipant(int n) {
+    void Nation::removeParticipantID(int n) {
     // ** Shoulndt return anything **
     participants_id->remove(n);
     num_participants = participants_id->noOfElements();
-    return NULL;
-     
 }
 
 string Nation::getName() {

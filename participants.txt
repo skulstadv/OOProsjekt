@@ -1,0 +1,21 @@
+4
+1
+Ola Nordmann
+NOR
+0
+
+2
+Kari Nordmann
+NOR
+1
+
+5
+Peder
+SWE
+0
+
+7
+Lisa
+SWE
+1
+
