@@ -29,11 +29,15 @@ class Nation : public TextElement {
     int num_participants;
 
 public:
+    // Constructor - read from file
     Nation(std::string s, std::ifstream& in);
 
     // Constructor
     // -s unique 3 char abbreviation of nation name
     Nation(std::string s);
+
+    // Destructor
+    ~Nation();
 
     // Inserts participant ID into list of participant IDs
     // -return true if ID successfully added to list

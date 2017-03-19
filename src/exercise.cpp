@@ -1,11 +1,48 @@
 #include "../include/main.h"
 #include "../include/exercise.h"
+#include "../include/result.h"
 #include "../include/participant.h"
 #include "../include/ListTool2B.h"
 #include "../include/utility.h"
 #include <iostream>
 using namespace std;
 
+
+Exercise::Exercise(int n, std::ifstream & in) : NumElement(n) {
+    int num_participants;
+    //int participant_id;
+    participants_id = new List(Sorted); 
+    results = new List(Sorted);
+    name = new string();               
+    //in >> num_participants;
+    //cout << "\t\tReading " << num_participants << " participants from file\n";
+    readParticipantsFromFile();
+    // Reading all participants of exercise
+
+    //for (int i = 0; i < num_participants; i++) {
+    //    in >> participant_id;
+    //    cout << "\t\tTrying to read participants id from list\n";
+    //    // Should probably check for existance of participant here..
+    //    if (participants->getParticipant(participant_id))
+    //        cout << "\t\tRead nonexistant participant from file. Ignored.\n";
+    //    else {
+    //        addParticipantID(participant_id);
+    //        // Ignore newline after last participant id 
+    //        if (i == (num_participants - 1))
+    //            in.ignore(2); // 2 because space will also have to be ignored
+    //    }
+    //    cout << "Num participants != 0\n";
+    //}
+
+    // Read name of exercise from file
+    getline(in, *name);
+    // Read time of day and date
+    in >> time_of_day >> date;
+    // Ignore newline after integers
+    cout << "\t\tReading results from file\n";
+    // Read results from file 
+    readResultsFromFile();
+}
 
 Exercise::Exercise(int n) : NumElement(n) {
     participants_id = new List(Sorted); //define participants and results list
@@ -57,7 +94,10 @@ void Exercise::displayParticipants() {
     // participants_id list exists of NumElements. Temp for our ne
     NumElement* ne;
     // Listtool origin index = 1 (!)
+    cout << "\t\tparticipants_id->noOfElements() = " << participants_id->noOfElements() << endl;
+    cout << "\t\tUsing participants_id\n";
     for (int i = 1; i <= participants_id->noOfElements(); i++) {
+        cout << "\t\tDone using participants_id\n";
         ne = (NumElement*)participants_id->removeNo(i);
         id = ne->getNumber();
         participants->getParticipant(id)->display();
@@ -115,4 +155,152 @@ void Exercise::setTime() {
 
 string Exercise::getName() {
     return *name;
+}
+
+void Exercise::writeToFile(ofstream& out) {
+    // Write unique exercise id first
+    //NumElement* ne;
+
+//     out << participants_id->noOfElements() << endl;
+//     for (int i = 1; i <= participants_id->noOfElements(); i++) {
+//         ne = (NumElement*)participants_id->removeNo(i);
+//         out << ne->getNumber() << ' ';
+//         participants_id->add(ne);
+//         // Add newline after last id
+//         if (i == (participants_id->noOfElements() - 1))
+//             out << endl; 
+//     }
+    writeParticipantsToFile();
+    out << *name << endl;
+    out << time_of_day << ' ' << date << endl;
+    // Write results to file
+    writeResultsToFile();
+}
+
+bool Exercise::readResultsFromFile() {
+    string file_name = *name + "_results.txt";
+    ifstream in = ifstream(file_name);
+    // Check if file exists
+    if (!in.is_open()) {
+        cout << "\t\tCouldn't find results file\n";
+        return false;
+    }
+    // Just return if results list starts with a zero (zero results)
+    if (in.peek() == 0) {
+        cout << "\t\tCouldn't find results list or is empty\n";
+        return false;
+    }
+    // Amount of participants in file
+    int sum;
+    // The current participants result
+    int res;
+    // The participants id
+    int id;
+    in >> sum;
+    cout << "\t\tReading " << sum << " results from file\n";
+    for (int i = 0; i < sum; i++) {
+        in >> res;
+        in >> id;
+        if (participants->getParticipant(res) != nullptr) {
+            // Add to list but print error if already registered
+            if (!results->add(new Result(res, id)))
+                cout << "\t\tAlready exists in list.\n";
+        }
+        else
+            cout << "\t\tParticipant doesn't exist.\n";
+    }
+    // Close file
+    in.close();
+    displayParticipants();
+    return true;
+}
+
+bool Exercise::writeResultsToFile() {
+    string file_name = *name + "_results.txt";
+    ofstream out = ofstream(file_name);
+    // Number of results in results list
+    int num = results->noOfElements();
+    // Result of participant
+    int r;
+    // participant id of result
+    int id;
+    // Num element with id that we remove
+    Result* res;
+    // Write the amount of results to file first
+    out << num << ' ';
+    // Debug
+    cout << "\t\tExercise: Writing results to file: " << num << endl;
+    // Loops through all results
+    for (int i = 1; i <= num; i++) {
+        // Just remove the first element until list is empty
+        res = (Result*)results->removeNo(i);
+        r = res->getNumber();
+        id = res->getParticipantID();
+        // Finally we can write the result and participant id of result to file
+        out << r << ' ' << id << ' ';
+        // Put back in list
+        results->add(res);
+    }
+    // Close file
+    out.close();
+    return true;
+}
+
+void Exercise::writeParticipantsToFile() {
+    ofstream out = ofstream(*name + "_participants.txt");
+    // participants_id list
+    // Number of participants in participants_id
+    int num = participants_id->noOfElements();
+    // id of participant
+    int id;
+    // Num element with id that we remove
+    NumElement* ne;
+    // Write the amount of participants to file first
+    out << num << ' ';
+    // Debug
+    cout << "\t\tExercise: Writing participants_id to file: " << participants_id->noOfElements() << endl;
+    // Loops through all participants
+    for (int i = 1; i <= num; i++) {
+        ne = (NumElement*)participants_id->removeNo(i);
+        id = ne->getNumber();
+        // Finally we can write the id number of participant to file
+        out << id << ' ';
+        // Put back in list
+        participants_id->add(ne);
+    }
+    // Close file
+    out.close();
+}
+
+
+void Exercise::readParticipantsFromFile() {
+    ifstream in = ifstream(*name + "_participants.txt");
+    // Check if file exists
+    if (!in.is_open()) {
+        cout << "\t\tExercise: Couldn't find " << *name << "_id.txt file\n";
+        return;
+    }
+    // Just return if participants list starts with a zero (zero participants)
+    if (in.peek() == 0) {
+        cout << "\t\tExercise: " << *name << "_participants.txt file is empty.\n";
+        return;
+    }
+    // Amount of participants in file
+    int sum;
+    // The current participants unique id
+    int n;
+    in >> sum;
+    for (int i = 0; i < sum; i++) {
+        in >> n;
+        if (participants->getParticipant(n) != nullptr) {
+            // Add to list but print error if already registered
+            if (!addParticipantID(n))
+                cout << "\t\tExercise: Adding participant - Already exists in list.\n";
+        }
+        else
+            cout << "\t\tExercise: Adding participant - Doesn't exist.\n";
+    }
+    // Close file
+    in.close();
+    displayParticipants();
 }

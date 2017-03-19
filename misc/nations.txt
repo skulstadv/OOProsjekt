@@ -1,12 +1,16 @@
-nation_short
 (nations->noOfElements)
-(participants_id->noOfElements) 1, 2, 3 ... n
+nation_short
 nation_long
 contact_name
 contact_tel num_participants
-int
-str
-int int int int int int 
-str
-str
-int int 
+
+int 	// Number of nations (how many loops to do)
+str 	// 1. nations abbreviation 
+str 	// 1. nations long name
+str 	// 1. nations contact name
+int 	// 1. nations telephone
+
+str 	// 2. nations abbreviation 
+str 	// 2. nations long name
+str 	// 2. nations contact name
+int 	// 2. nations telephone 

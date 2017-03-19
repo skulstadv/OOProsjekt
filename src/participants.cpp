@@ -8,6 +8,10 @@ Participants::Participants() {
     participants = new List(Sorted);
 }
 
+Participants::~Participants() {
+    //TODO
+}
+
 bool Participants::addParticipant(Participant* participant) {
     // Dont want to add nullptr
     if (participant == nullptr) {
@@ -81,11 +85,24 @@ void Participants::writeToFile(ofstream& out) {
 }
 
 void Participants::readFromFile(std::ifstream & in) {
-    int num = participants->noOfElements();
-    Participant* nation;
+    int num = 0;
+    // Reads number of participants in file
+    in >> num;
+    // Ignores the newline
+    in.ignore();
+    int participant_id;
+    // Empty old list first
+    while (participants->noOfElements() > 0)
+        delete participants->removeNo(1);
+    // Add new ones
     for (int i = 0; i < num; i++) {
-        nation = (Participant*)participants->removeNo(1);
+        // Read participant id first
+        in >> participant_id;
+        // Ignore newline and make ready for participant class to read
+        in.ignore();
+        participants->add(new Participant(participant_id, in));
+        // If there are more participants we need to ignore the two newlines
+        in.ignore(2);
     }
-    // TODO
 }
 

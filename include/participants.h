@@ -15,6 +15,9 @@ public:
     // Constructor
     Participants();
 
+    // Destructor
+    ~Participants();
+
     // Add participant to linked list
     // -return true if successfull (id unique)
     bool addParticipant(Participant* participant);

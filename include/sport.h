@@ -19,9 +19,15 @@ class Sport: public TextElement{
     List* exercises;
 
 public:
+    // Constructor - read from file
+    Sport(std::string s, std::ifstream& in);
+
     // Constructor
     // Create a new sport with unique name -s
     Sport(std::string s);
+
+    // Destructor
+    ~Sport();
 
     // Add exercise to exercises list
     void addExercise(Exercise* exercise);
@@ -45,9 +51,6 @@ public:
 
     // Write class to file
     void writeToFile(std::ofstream& out);
-
-    // Read class from file
-    void readFromFile(std::ifstream& in);
 };
 
 #endif

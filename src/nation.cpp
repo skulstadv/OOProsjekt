@@ -9,25 +9,19 @@ using namespace std;
 
 Nation::Nation(std::string s, std::ifstream& in) : TextElement(s.c_str()) {
     participants_id = new List(Sorted);
-    // Number of ids in participants list
-    int num;
-    // The most recent id in participant list to add
-    int id;
-    in >> num;
-    for (int i = 0; i < num; i++) {
-        in >> id;
-        // Adding id to list
-        // TODO - Add check for existance in participants list
-        participants_id->add(new NumElement(id));
-    }
-    in.ignore();
-    in.ignore();
     nation_long = new string();
-    getline(in, *nation_long);
     contact_name = new string();
+    getline(in, *nation_long);
     getline(in, *contact_name);
     in >> contact_tel;
-    in >> num_participants;
+    num_participants = 0;
+}
+
+Nation::~Nation() {
+    // Just delete the participants ids from list
+    delete participants_id;
+    delete nation_long;
+    delete contact_name;
 }
 
 Nation::Nation(string s) : TextElement(s.c_str()) {
@@ -47,7 +41,7 @@ bool Nation::addParticipantID(int n) {
     if (participants_id->inList(n))
         return false;
     participants_id->add(new NumElement(n));
-    num_participants++;
+    num_participants = participants_id->noOfElements();
     return true;
 }
 
@@ -62,7 +56,7 @@ Participant* Nation::getParticipant(int n) {
 Participant* Nation::removeParticipant(int n) {
     // ** Shoulndt return anything **
     participants_id->remove(n);
-    num_participants--;
+    num_participants = participants_id->noOfElements();
     return NULL;
      
 }
@@ -107,17 +101,8 @@ void Nation::displayParticipant(int n) {
 void Nation::writeToFile(ofstream& out) {
     // Write unique abbreviation first
     out << text << endl;
-    out << participants_id->noOfElements() << ' ';
-    NumElement* ne;
-    // Write all num elements in participants id list to file
-    for (int i = 1; i <= participants_id->noOfElements(); i++) {
-        ne = (NumElement*)participants_id->removeNo(i);
-        // Write id to file
-        out << ne->getNumber() << ' ';
-        participants_id->add(ne);
-    }
-    out << endl;
     out << *nation_long << endl;
     out << *contact_name << endl;
-    out << contact_tel << ' ' << num_participants << endl;
+    // Two endlines between nations for readability
+    out << contact_tel << endl << endl;
 }

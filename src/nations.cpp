@@ -77,23 +77,21 @@ void Nations::writeToFile(ofstream& out) {
 }
 
 void Nations::readFromFile(std::ifstream & in) {
-    int num;
-    // Reads number of participant ids in list
+    int num = 0;
+    // Reads number of nations from file
     in >> num;
     // Ignores the newline
     in.ignore();
-    cout << "Number of nations: " << num << endl;
-    Nation* nation;
     string nation_short;
     // Empty old list first
-    for (int i = 0; i < nations->noOfElements(); i++)
-        nations->removeNo(1);
+    while (nations->noOfElements() > 0)
+       delete (Nations*)nations->removeNo(1);
     // Add new ones
     for (int i = 0; i < num; i++) {
         // Read nation abbreviation first
         getline(in, nation_short);
-        cout << "Creating nation: " << nation_short;
         nations->add(new Nation(nation_short, in));
+        // If there are more nations we need to ignore the two newlines
+        in.ignore(2);
     }
-    // TODO
 }

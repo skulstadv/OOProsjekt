@@ -15,9 +15,14 @@ class Participant : public NumElement {
     bool isFemale;
 
 public:
+    // Read from file constructor
+    Participant(int n, std::ifstream& in);
 
     // Constructor, -n is a unique number for this participant
     Participant(int n);
+
+    // Destructor
+    ~Participant();
 
     // Display this participants data
     void display();
@@ -33,8 +38,5 @@ public:
 
     // Write class to file
     void writeToFile(std::ofstream& out);
-
-    // Read class from file
-    void readFromFile(std::ifstream& in);
 };
 #endif

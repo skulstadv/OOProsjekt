@@ -1,0 +1,16 @@
+participants->noOfElements()
+id
+name
+nation_short
+isFemale
+
+int	// Number of participants (n loops)
+int	// 1. participant
+string  // 1. participant  
+string  // 1. participant  
+int	// 1. participant
+
+int	// 2. participant
+string  // 2. participant  
+string  // 2. participant  
+int	// 2. participant
