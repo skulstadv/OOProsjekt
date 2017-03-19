@@ -164,11 +164,16 @@ bool Exercise::readResultsFromFile() {
     int id;
     in >> sum;
     for (int i = 0; i < sum; i++) {
+        string data;
         in >> res;
         in >> id;
+        // Ignore newline after id
+        in.ignore();
+        // Get the data
+        getline(in, data);
         if (participants->getParticipant(id) != nullptr) {
             // Add to list but print error if already registered
-            if (!results->add(new Result(res, id)))
+            if (!results->add(new Result(res, id, data)))
             cout << "\t\tExercise: Result - Participant already exists in list.\n";
         }
         else
@@ -199,7 +204,9 @@ bool Exercise::writeResultsToFile() {
         r = res->getNumber();
         id = res->getParticipantID();
         // Finally we can write the result and participant id of result to file
-        out << r << ' ' << id << ' ';
+        out << r << ' ' << id << endl;
+        // Write data
+        out << res->getData() << endl;
         // Put back in list
         results->add(res);
     }
@@ -207,31 +214,6 @@ bool Exercise::writeResultsToFile() {
     out.close();
     return true;
 }
-
-void Exercise::writeParticipantsToFile() {
-    ofstream out = ofstream(*name + "_participants.txt");
-    // participants_id list
-    // Number of participants in participants_id
-    int num = participants_id->noOfElements();
-    // id of participant
-    int id;
-    // Num element with id that we remove
-    NumElement* ne;
-    // Write the amount of participants to file first
-    out << num << ' ';
-    // Loops through all participants
-    for (int i = 1; i <= num; i++) {
-        ne = (NumElement*)participants_id->removeNo(i);
-        id = ne->getNumber();
-        // Finally we can write the id number of participant to file
-        out << id << ' ';
-        // Put back in list
-        participants_id->add(ne);
-    }
-    // Close file
-    out.close();
-}
-
 
 void Exercise::readParticipantsFromFile() {
     ifstream in = ifstream(*name + "_participants.txt");
@@ -262,4 +244,28 @@ void Exercise::readParticipantsFromFile() {
     }
     // Close file
     in.close();
+}
+
+void Exercise::writeParticipantsToFile() {
+    ofstream out = ofstream(*name + "_participants.txt");
+    // participants_id list
+    // Number of participants in participants_id
+    int num = participants_id->noOfElements();
+    // id of participant
+    int id;
+    // Num element with id that we remove
+    NumElement* ne;
+    // Write the amount of participants to file first
+    out << num << ' ';
+    // Loops through all participants
+    for (int i = 1; i <= num; i++) {
+        ne = (NumElement*)participants_id->removeNo(i);
+        id = ne->getNumber();
+        // Finally we can write the id number of participant to file
+        out << id << ' ';
+        // Put back in list
+        participants_id->add(ne);
+    }
+    // Close file
+    out.close();
 }

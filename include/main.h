@@ -40,8 +40,7 @@ void exerciseSwitchResults(Exercise* exercise);
 void newParticipantsList(Exercise* exercise);
 
 // Creates a new results list if no list exists
-// Writes to file after creating
-void newResultsList(Exercise* exercise);
+void newResultsList(Exercise* exercise, int result_data_type);
 
 // Remove participantslist
 void removeParticipantsList(Exercise* exercise);

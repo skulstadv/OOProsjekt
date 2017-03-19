@@ -77,10 +77,10 @@ public:
     // Write exercise results to file
     bool writeResultsToFile();
 
-    // Write participants to file
-    void writeParticipantsToFile();
-
     // Read participants from file
     void readParticipantsFromFile();
+
+    // Write participants to file
+    void writeParticipantsToFile();
 };
 #endif

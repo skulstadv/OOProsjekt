@@ -46,7 +46,6 @@ bool Nation::addParticipantID(int n) {
 }
 
 Participant* Nation::getParticipant(int n) {
-    // ** Probably wont work **
     Participant* participant;
     NumElement* num_element = (NumElement*)participants_id->remove(n);
     participant = participants->getParticipant(num_element->getNumber());
@@ -54,7 +53,6 @@ Participant* Nation::getParticipant(int n) {
 }
 
     void Nation::removeParticipantID(int n) {
-    // ** Shoulndt return anything **
     participants_id->remove(n);
     num_participants = participants_id->noOfElements();
 }

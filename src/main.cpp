@@ -60,7 +60,7 @@ void nationSwitch() {
 
     // Read from file first
     readNationsFromFile();
-    readParticipantsFromFile();   
+    readParticipantsFromFile();
     // Loop until until input = 'Q'
     do {
         cout << "\n\tNations: \n\tN = New nation\n\tE = Change nation";
@@ -372,7 +372,7 @@ void exerciseSwitchParticipants(Exercise* exercise) {
             exercise->displayParticipants();
             break;
         case 'N':  // New participant list from user input
-            {
+        {
             newParticipantsList(exercise);
             break;
         }
@@ -392,11 +392,11 @@ void exerciseSwitchParticipants(Exercise* exercise) {
                             cout << "\t\tAlready exists in list.\n";
                     }
                     else if (!exercise->removeParticipantID(n))
-                            cout << "\t\tParticipant isn't in list.\n";
+                        cout << "\t\tParticipant isn't in list.\n";
                 }
                 else
                     cout << "\t\tParticipant doesn't exist.\n";
-                    }
+            }
             else
                 cout << "\t\tResults already exist. Can't change participants.\n";
             // Write our changes to file
@@ -442,7 +442,7 @@ void exerciseSwitchResults(Exercise* exercise) {
             break;
         case 'N': // If results are empty ask user to input a new results list
             if (exercise->getResultsList()->noOfElements() == 0) {
-                newResultsList(exercise);
+                newResultsList(exercise, 0); // TODO - Second param is special for every sport
             }
             else
                 cout << "\t\tResults list already exists.\n";
@@ -526,7 +526,13 @@ void writeSportsToFile()
     out.close();
 }
 
-void newResultsList(Exercise* exercise) {
+// result_data_type decides between sport result formats:
+// 0 = Skiskyting, Langrenn
+// 1 = Skoyter, Alpin, Bob, Skeleton
+// 2 = Aking, Kortbane
+// 3 = Hopp
+// 4 = Kunstlop
+void newResultsList(Exercise* exercise, int result_data_type) {
     int n;
     int res;
     List* results;
@@ -556,14 +562,41 @@ void newResultsList(Exercise* exercise) {
                 cout << "\t\tInvalid input.\n";
             }
             else {
-                if (results->inList(res))
+                // Unlimited results allowed with 0 points
+                if (res != 0 && results->inList(res))
                     cout << "\t\tThis result is already registered to another participant\n";
-                else
-                    results->add(new Result(res, n));
+                else {
+                    // Ask for correct data type of result
+                    string data;
+                    switch (result_data_type) {
+                    case 0:  // Min:Sek:Tidel
+                        data = to_string(getInt(0, 59, 2, "Write minute: "));
+                        data += ":" + to_string(getInt(0, 59, 2, "Write second: "));
+                        data += ":" + to_string(getInt(0, 9, 2, "Write second/10: "));
+                        break;
+                    case 1:  // Min:Sek:Hundredel
+                        data = to_string(getInt(0, 59, 2, "Write minute: "));
+                        data += ":" + to_string(getInt(0, 59, 2, "W'rite second: "));
+                        data += ":" + to_string(getInt(0, 99, 2, "Write second/100: "));
+                        break;
+                    case 2:  // Min:Sek:Tusendel
+                        data = to_string(getInt(0, 59, 2, "Write minute: "));
+                        data += ":" + to_string(getInt(0, 59, 2, "Write second: "));
+                        data += ":" + to_string(getInt(0, 999, 2, "Write second/1000: "));
+                        break;
+                    case 3:  // [0-9]
+                        data = to_string(getInt(0, 9, 2, "Write score: "));
+                        break;
+                    case 4:  // [0-99]
+                        data = to_string(getInt(0, 99, 2, "Write score: "));
+                        break;
+                    }
+                    //cout << "\t\tRegistered: " << data << endl;
+                    results->add(new Result(res, n, data));
+                }
             }
-        // Display error if result for this participant id exists already
         }
-        else
+        else if(n != 0) // Do not write error when user types 0 to quit
             cout << "\t\tParticipant doesn't exist or is already in results list\n";
     } while (n != 0);
 }

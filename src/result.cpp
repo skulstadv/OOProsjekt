@@ -3,8 +3,10 @@
 using namespace std;
 
 
-Result::Result(int result, int id) : NumElement(result) {
+Result::Result(int result, int id, string s) : NumElement(result) {
     participant_id = id;
+    result_data = new string();
+    *result_data = s;
 }
 
 Result::~Result() {
@@ -12,6 +14,10 @@ Result::~Result() {
 
 int Result::getParticipantID() {
     return participant_id;
+}
+
+std::string Result::getData() {
+    return *result_data;
 }
 
 void Result::display() {
