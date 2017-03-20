@@ -4,6 +4,7 @@
 #include "listTool2B.h"
 #include "participant.h"
 #include "participants.h"
+#include <fstream>
 
 // A nation - Contains list of participants and contact info for one person
 class Nation : public TextElement {
@@ -28,11 +29,15 @@ class Nation : public TextElement {
     int num_participants;
 
 public:
-    Nation();
+    // Constructor - read from file
+    Nation(std::string s, std::ifstream& in);
 
     // Constructor
     // -s unique 3 char abbreviation of nation name
     Nation(std::string s);
+
+    // Destructor
+    ~Nation();
 
     // Inserts participant ID into list of participant IDs
     // -return true if ID successfully added to list
@@ -43,10 +48,13 @@ public:
     Participant* getParticipant(int n);
 
     // Remove participant with ID -n from participants list
-    Participant* removeParticipant(int n);
+    void removeParticipantID(int n);
 
-    // -return the nation_long name of this nation
+    // Returns the nation_long name of this nation
     std::string getName();
+
+    // Returns full name
+    std::string getNameFull();
 
     // Display this nations data excluding participants
     void display();
@@ -56,5 +64,8 @@ public:
 
     // Display the participant with ID -n
     void displayParticipant(int n);
+
+    // Write class to file
+    void writeToFile(std::ofstream& out);
 };
 #endif

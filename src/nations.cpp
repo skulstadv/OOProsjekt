@@ -1,5 +1,6 @@
 #include "../include/nations.h"
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 
@@ -54,4 +55,43 @@ void Nations::display(string s) {
     nation->display();
     // Done with object, adding back to list
     nations->add(nation);
+}
+
+int Nations::getNumber() {
+    return nations->noOfElements();
+}
+
+List * Nations::getList() {
+    return nations;
+}
+
+void Nations::writeToFile(ofstream& out) {
+    int num = nations->noOfElements();
+    out << num << endl;
+    Nation* nation;
+    for (int i = 1; i <= num; i++) {
+        nation = (Nation*)nations->removeNo(i);
+        nation->writeToFile(out);
+        nations->add(nation);
+    }
+}
+
+void Nations::readFromFile(std::ifstream & in) {
+    int num = 0;
+    // Reads number of nations from file
+    in >> num;
+    // Ignores the newline
+    in.ignore();
+    string nation_short;
+    // Empty old list first
+    while (nations->noOfElements() > 0)
+       delete (Nations*)nations->removeNo(1);
+    // Add new ones
+    for (int i = 0; i < num; i++) {
+        // Read nation abbreviation first
+        getline(in, nation_short);
+        nations->add(new Nation(nation_short, in));
+        // If there are more nations we need to ignore the two newlines
+        in.ignore(2);
+    }
 }

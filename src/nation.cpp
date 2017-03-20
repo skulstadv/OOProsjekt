@@ -3,7 +3,26 @@
 #include "../include/participants.h"
 #include "../include/main.h"
 #include <iostream>
+#include <fstream>
+
 using namespace std;
+
+Nation::Nation(std::string s, std::ifstream& in) : TextElement(s.c_str()) {
+    participants_id = new List(Sorted);
+    nation_long = new string();
+    contact_name = new string();
+    getline(in, *nation_long);
+    getline(in, *contact_name);
+    in >> contact_tel;
+    num_participants = 0;
+}
+
+Nation::~Nation() {
+    // Just delete the participants ids from list
+    delete participants_id;
+    delete nation_long;
+    delete contact_name;
+}
 
 Nation::Nation(string s) : TextElement(s.c_str()) {
     participants_id = new List(Sorted);
@@ -22,27 +41,28 @@ bool Nation::addParticipantID(int n) {
     if (participants_id->inList(n))
         return false;
     participants_id->add(new NumElement(n));
-    num_participants++;
+    num_participants = participants_id->noOfElements();
     return true;
 }
 
 Participant* Nation::getParticipant(int n) {
-    // ** Probably wont work **
     Participant* participant;
     NumElement* num_element = (NumElement*)participants_id->remove(n);
     participant = participants->getParticipant(num_element->getNumber());
     return participant;
 }
 
-Participant* Nation::removeParticipant(int n) {
-    // ** Shoulndt return anything **
+    void Nation::removeParticipantID(int n) {
     participants_id->remove(n);
-    return NULL;
-     
+    num_participants = participants_id->noOfElements();
 }
 
 string Nation::getName() {
     return text;
+}
+
+std::string Nation::getNameFull() {
+    return *nation_long;
 }
 
 void Nation::display() {
@@ -76,4 +96,13 @@ void Nation::displayParticipants() {
 
 void Nation::displayParticipant(int n) {
     //TODO
+}
+
+void Nation::writeToFile(ofstream& out) {
+    // Write unique abbreviation first
+    out << text << endl;
+    out << *nation_long << endl;
+    out << *contact_name << endl;
+    // Two endlines between nations for readability
+    out << contact_tel << endl << endl;
 }

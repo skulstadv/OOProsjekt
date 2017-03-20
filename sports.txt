@@ -1,0 +1,19 @@
+2
+Football
+0
+0
+
+Skiing
+1
+2
+1
+-------ExerciseBEGIN--------
+100m
+2020 20200220
+-------ExerciseSTOP--------
+3
+-------ExerciseBEGIN--------
+5000m
+505 20500505
+-------ExerciseSTOP--------
+

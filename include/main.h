@@ -35,7 +35,37 @@ void exerciseSwitchParticipants(Exercise* exercise);
 // Switch for editing/creating results lists
 void exerciseSwitchResults(Exercise* exercise);
 
-// Reads participants from file into an exercise
-void readParticipantsFromFile(Exercise* exercise);
+// Creates a new participants list if no list exists
+// Writes to file after creating
+void newParticipantsList(Exercise* exercise);
 
+// Creates a new results list if no list exists
+void newResultsList(Exercise* exercise, int result_data_type);
+
+// Remove participantslist
+void removeParticipantsList(Exercise* exercise);
+
+// Read nations from file
+void readNationsFromFile();
+
+// Read participants from file  
+void readParticipantsFromFile();
+
+// Read sports from file  
+void readSportsFromFile();
+
+// Write nations from file
+void writeNationsToFile();
+
+// Write participants to file
+void writeParticipantsToFile();
+
+// Write sports from file  
+void writeSportsToFile();
+
+// Display all medals of each nation
+void displayMedals();
+
+// Display all points of each nation
+void displayPoints();
 #endif

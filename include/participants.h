@@ -3,6 +3,7 @@
 #include "listTool2B.h"
 #include "participant.h"
 #include <string>
+#include <fstream>
 
 // Container class for all participants
 class Participants {
@@ -13,6 +14,9 @@ class Participants {
 public:
     // Constructor
     Participants();
+
+    // Destructor
+    ~Participants();
 
     // Add participant to linked list
     // -return true if successfull (id unique)
@@ -33,6 +37,17 @@ public:
     // Return the number of participants
     int getNumParticipants();
 
+    // Returns how many participants in the list
+    int getNumber();
+
+    // Returns list
+    List* getList();
+
+    // Write class to file
+    void writeToFile(std::ofstream& out);
+
+    // Read class from file
+    void readFromFile(std::ifstream& in);
 };
 
 #endif

@@ -3,6 +3,7 @@
 #include "nation.h"
 #include "listTool2B.h"
 #include <string>
+#include <fstream>
 
 // Container class for all nations
 class Nations { 
@@ -32,6 +33,17 @@ public:
     // Displays all nations with ID -s
     void display(std::string s);
 
+    // Returns how many nations in the list
+    int getNumber();
+
+    // Returns list
+    List* getList();
+
+    // Write class to file
+    void writeToFile(std::ofstream& out);
+
+    // Read class from file
+    void readFromFile(std::ifstream& in);
 };
 
 #endif

@@ -24,9 +24,12 @@ class Exercise : public NumElement {
     int time_of_day;
 
     // Date of the exercise
-    int date;
+    unsigned int date;
 
 public:
+
+    // Constructor - Read from file
+    Exercise(int n, std::ifstream& in);
 
     // Constructor
     // Creates a new Exercise object with unique ID -n
@@ -40,6 +43,7 @@ public:
 
     // Insert participant with ID -n in participants list
     // -return true if successfull
+    // -return false if participant ID already in list
     bool addParticipantID(int n);
 
     // Remove participant with ID -n from this exercise 
@@ -62,6 +66,21 @@ public:
     void setTime();
 
     // Returns name of exercise
-    std::string getName();
+    std::string* getName();
+
+    // Writes exercise to file
+    void writeToFile(std::ofstream& out);
+
+    // Read exercise results from file
+    bool readResultsFromFile();
+
+    // Write exercise results to file
+    bool writeResultsToFile();
+
+    // Read participants from file
+    void readParticipantsFromFile();
+
+    // Write participants to file
+    void writeParticipantsToFile();
 };
 #endif

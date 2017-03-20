@@ -6,6 +6,8 @@
 #include "../include/medals.h"
 #include "../include/points.h"
 #include "../include/utility.h"
+#include "../include/result.h"
+#include "../include/exercise.h"
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
@@ -15,8 +17,10 @@ using namespace std;
 Participants* participants = new Participants();
 Sports* sports = new Sports();
 Nations* nations = new Nations();
-Medals* medals = new Medals();
-Points* points = new Points();
+//Medals* medals = new Medals();
+//Points* points = new Points();
+ofstream out;
+ifstream in;
 
 int main() {
     // The users choice
@@ -38,13 +42,120 @@ int main() {
             sportSwitch(); break;
         case 'O':
             exerciseSwitch(); break;
+        case 'M':
+            displayMedals(); break;
+        case 'P':
+            displayPoints(); break;
         }
     } while (input.at(0) != 'Q');
+}
+
+void displayMedals() {
+    readNationsFromFile();
+    readParticipantsFromFile();
+    readSportsFromFile();
+    Nation* nation;
+    Sport* sport;
+    Exercise* exercise;
+    Result* result;
+    string name;
+    int gold = 0;
+    int silver = 0;
+    int bronze = 0;
+
+    // Loop through all nations displaying medals
+    for (int i = 1; i <= nations->getList()->noOfElements(); i++) {
+        nation = (Nation*)nations->getList()->removeNo(i);
+        nations->getList()->add(nation);
+        // Counting through sports and exercises
+        for (int i = 1; i <= sports->getList()->noOfElements(); i++) {
+            sport = (Sport*)sports->getList()->removeNo(i);
+            sports->getList()->add(sport);
+            // Count through all exercises
+            for (int i = 1; i <= sport->getExercisesList()->noOfElements(); i++) {
+                exercise = (Exercise*)sport->getExercisesList()->removeNo(i);
+                sport->getExercisesList()->add(exercise);
+                // Count through all results and check for match with nation
+                for (int i = 1; i <= exercise->getResultsList()->noOfElements(); i++) {
+                    result = (Result*)exercise->getResultsList()->removeNo(i);
+                    exercise->getResultsList()->add(result);
+                    // Temp for name
+                    name = *participants->getParticipant(result->getParticipantID())->getNationName();
+                    // If its the right nation
+                    if (name.compare(nation->getName()) == 0) {
+                        // Check if gold silver or bronze
+                        if (result->getNumber() == 7)
+                            gold++;
+                        if (result->getNumber() == 5)
+                            silver++;
+                        if (result->getNumber() == 4)
+                            bronze++;
+                    }
+                }
+            }
+        }
+        // Fixing output if points
+        if (gold > 0 || silver > 0 || bronze > 0) {
+            cout << nation->getNameFull() << " medal statistics:\n\tGold:\t" << gold << endl;
+            cout << "\tSilver:\t" << silver << endl;
+            cout << "\tBronze:\t" << bronze << endl << endl;
+        }
+        // Reset counters
+        gold = 0;
+        silver = 0;
+        bronze = 0;
+    }
+}
+
+void displayPoints() {
+    readNationsFromFile();
+    readParticipantsFromFile();
+    readSportsFromFile();
+    Nation* nation;
+    Sport* sport;
+    Exercise* exercise;
+    Result* result;
+    string name;
+    int points = 0;
+    // Loop through all nations displaying medals
+    for (int i = 1; i <= nations->getList()->noOfElements(); i++) {
+        nation = (Nation*)nations->getList()->removeNo(i);
+        nations->getList()->add(nation);
+        // Counting through sports and exercises
+        for (int i = 1; i <= sports->getList()->noOfElements(); i++) {
+            sport = (Sport*)sports->getList()->removeNo(i);
+            sports->getList()->add(sport);
+            // Count through all exercises
+            for (int i = 1; i <= sport->getExercisesList()->noOfElements(); i++) {
+                exercise = (Exercise*)sport->getExercisesList()->removeNo(i);
+                sport->getExercisesList()->add(exercise);
+                // Count through all results and check for match with nation
+                for (int i = 1; i <= exercise->getResultsList()->noOfElements(); i++) {
+                    result = (Result*)exercise->getResultsList()->removeNo(i);
+                    exercise->getResultsList()->add(result);
+                    // Temp for name
+                    name = *participants->getParticipant(result->getParticipantID())->getNationName();
+                    // If its the right nation
+                    if (name.compare(nation->getName()) == 0) {
+                        // Just add the points of this result as its the right nation
+                        points += result->getNumber();
+                    }
+                }
+            }
+        }
+        if (points > 0) {
+            // Fixing output if points
+            cout << nation->getNameFull() << " points statistics:\n\tPoints:\t" << points << endl;
+        }
+        // Reset counters
+        points = 0;
+    }
 }
 
 
 void help() {
     cout << "\nN = Nation\nD = Participant\nG = Sport\nO = Exercise";
+    cout << "\nM = Medals statistics\nP = Points statistics";
     cout << "\nQ = Quit\n\n";
 }
 
@@ -54,6 +165,9 @@ void nationSwitch() {
     // Stores the users choice of nation
     string nation;
 
+    // Read from file first
+    readNationsFromFile();
+    readParticipantsFromFile();
     // Loop until until input = 'Q'
     do {
         cout << "\n\tNations: \n\tN = New nation\n\tE = Change nation";
@@ -63,16 +177,14 @@ void nationSwitch() {
         cout << "(except participants)\n\t";
         getChar(input);
         switch (input.at(0)) {
-            // Creates a new nation. Asks user to write nation abbreviation
-        case 'N':
+        case 'N':  // Creates a new nation. Asks user to write nation abbreviation
             if (nations->addNation(new Nation(*getNationAbbreviation(2))))
                 cout << "\t\tSuccess!\n";
             else
                 cout << "\t\tFailure. Nation id already taken\n";
             break;
-            // Edit nation
+        case 'E':  // Edit nation
             // Removes nation with abbreviation and creates new with same
-        case 'E':
             getString(nation, "Write unique abbreviation: ", 2);
             // Make sure nation exists
             if (nations->getNation(nation) != nullptr) {
@@ -85,20 +197,18 @@ void nationSwitch() {
             else
                 cout << "\t\tThis nation doesnt exist\n";
             break;
-            // Displays all participants of a nation
-        case 'T':
+        case 'T':  // Displays all participants of a nation
             nation = *getNationAbbreviation(2);
             if (nations->getNation(nation) != nullptr) {
                 nations->getNation(nation)->displayParticipants(); // THIS ONE IS FUCKED, FIX
             }
             break;
-            // Displays all data about all nations
-        case 'A':
+        case 'A':  // Displays all data about all nations
             nations->display();
             break;
 
-            // Get nation by name from global nations variable
-        case 'S':
+        case 'S':  // Get nation by name from global nations variable
+        {
             // Make sure we found a nation; not nullptr
             string* nation_abbreviation = getNationAbbreviation(2);
             nations->display((*nation_abbreviation).c_str());
@@ -106,6 +216,9 @@ void nationSwitch() {
             delete nation_abbreviation;
             break;
         }
+        }
+        // Write changes to file
+        writeNationsToFile();
     } while (input.at(0) != 'Q');
 }
 
@@ -118,7 +231,10 @@ void participantSwitch() {
     // Participant pointer for checking if name is unique
     Participant* participant;
     Participant* participant2;
-
+    // Read from file first
+    readNationsFromFile();
+    readParticipantsFromFile();
+    readSportsFromFile();
     // Loop until until input = 'Q'
     do {
         cout << "\n\tParticipants: \n\tN = New participant\n\tE = Change participant";
@@ -128,8 +244,8 @@ void participantSwitch() {
 
         switch (input.at(0)) {
 
-            // Creates a new participant. Asks user to write unique participant id 
-        case 'N':
+        case 'N':  // Creates a new participant. Asks user to write unique participant id 
+
             n = getInt(1, 10000, 2, "Write unique id of participant ");
             participant = new Participant(n);
             if (nations->getNation(*participant->getNationName()) == nullptr) {
@@ -146,10 +262,9 @@ void participantSwitch() {
                 cout << "\t\tParticipant id not unique" << endl;
             break;
 
-            // Edit participant
+        case 'E':  // Edit participant
             // Removes participant with id and creates new with same id
             // **  Sloppy deluxe  **
-        case 'E':
             n = getInt(1, 10000, 2, "Write unique id of participant ");
             participant = participants->getParticipant(n);
             if (participant == nullptr) {
@@ -164,9 +279,7 @@ void participantSwitch() {
                 break;
             }
             // Remove old nation association for participant 
-            // ** So long, should be refactored **
-            // Also; rename removeParticipant to removeParticipantID
-            nations->getNation((*participant->getNationName()).c_str())->removeParticipant(n);
+            nations->getNation((*participant->getNationName()).c_str())->removeParticipantID(n);
             // Remove the old one and delete it before adding new
             delete participants->removeParticipant(n);
             if (!participants->addParticipant(participant2))
@@ -174,13 +287,12 @@ void participantSwitch() {
             nations->getNation(*participant2->getNationName())->addParticipantID(n);
             break;
 
-            // Displays all data about all participants
-        case 'A':
+        case 'A':  // Displays all data about all participants
+
             participants->display();
             break;
 
-            // Displays all data about participant with id
-        case 'S':
+        case 'S':  // Displays all data about participant with id
             cout << "\t\tChoose id 0 to search by name\n";
             n = getInt(1, 10000, 2, "Write unique id of participant ");
             if (n > 0) {
@@ -193,6 +305,7 @@ void participantSwitch() {
             participants->displayParticipant(input2);
             break;
         }
+        writeParticipantsToFile();
     } while (input.at(0) != 'Q');
 }
 
@@ -200,27 +313,27 @@ void sportSwitch() {
     // The users choice
     string input;
     string input2;
-    // Temp sport*
     Sport* sport;
 
-    // Loop until until input = 'Q'
+    readNationsFromFile();
+    readParticipantsFromFile();
+    readSportsFromFile();
+    // Loop until input = 'Q'
     do {
         cout << "\n\tSport: \n\tN = New sport\n\tE = Change sport";
         cout << "\n\tA = Display data about all sports";
         cout << "\n\tS = Display all data for specified sport\n\t";
         getChar(input);
         switch (input.at(0)) {
-            // Creates a new sport. Asks user to write sport name
-        case 'N':
-            getString(input, "Write name of sport : ", 2);
+        case 'N':  // Creates a new sport. Asks user to write sport name
+            getString(input, "Write name of sport: ", 2);
             if (!sports->addSport(new Sport(input)))
                 cout << "\t\tSport with this name already exists";
             else
                 cout << "\t\tSuccess!\n";
             break;
-            // Edit sport - Change name and keep everything else
+        case 'E':  // Edit sport - Change name and keep everything else
             // Removes sport with name and creates new with different name
-        case 'E':
             getString(input, "Write name of sport : ", 2);
             sport = sports->removeSport(input);
             if (sport != nullptr) {
@@ -232,12 +345,10 @@ void sportSwitch() {
             else
                 cout << "\t\tCouldn't find sport with corresponding name\n";
             break;
-            // Displays all data about all sports
-        case 'A':
+        case 'A':  // Displays all data about all sports
             sports->display();
             break;
-            // Get sport by name from global sports variable
-        case 'S':
+        case 'S':  // Get sport by name from global sports variable
             // Get name of sport to be displayed
             getString(input, "Write name of sport : ", 2);
             sport = sports->getSport(input);
@@ -249,6 +360,7 @@ void sportSwitch() {
                 cout << "\t\tCouldn't find sport with corresponding name\n";
             break;
         }
+        writeSportsToFile();
     } while (input.at(0) != 'Q');
 }
 
@@ -262,6 +374,9 @@ void exerciseSwitch() {
     // The sport* this exercise belongs to
     Sport* sport;
 
+    readNationsFromFile();
+    readParticipantsFromFile();
+    readSportsFromFile();
     // Loop until until input = 'Q'
     do {
         // Get sport and check that it exists
@@ -273,23 +388,23 @@ void exerciseSwitch() {
             exercise = sport->getExercise(exercise_id);
             string exercise_name = "nullptr";
             if (exercise != nullptr)
-                exercise_name = exercise->getName();
+                exercise_name = *exercise->getName();
             cout << "\n\tExercise: \n\tN = New exercise\n\tE = Change exercise";
             cout << "\n\tF = Remove an exercise";
             cout << "\n\tA = Display all data for all exercises in specified sport";
             cout << "\n\tL = Modify participants of exercise: " << exercise_name;
-            cout << "\n\tR = Modify results of exercise: " << exercise_name << "\n";
+            cout << "\n\tR = Modify results of exercise: " << exercise_name << "\n\t";
             getChar(input);
         }
         // Couldn't find sport. Returning to main menu.
         else {
-            cout << "\tCouldn't find sport.\n";
+            if (input.at(0) != 'Q' && input.at(0) != 'q') // Dont display error if user just want to quit
+                cout << "\tCouldn't find sport.\n";
             return;
         }
 
         switch (input.at(0)) {
-            // Creates a new exercise. Asks user to write exercise name
-        case 'N':
+        case 'N':  // Creates a new exercise. Asks user to write exercise name
             if (exercise == nullptr) {
                 exercise = new Exercise(exercise_id);
                 sport->addExercise(exercise);
@@ -299,7 +414,7 @@ void exerciseSwitch() {
                 cout << " already exists.\n";
             }
             break;
-        case 'E':
+        case 'E':  // Change participant 
             if (exercise != nullptr) {
                 exercise->setName();
                 exercise->setDate();
@@ -311,10 +426,9 @@ void exerciseSwitch() {
                 cout << " doesn't exist.\n";
             }
             break;
-        case 'F':
-            // TODO - There are memory-leaks here
+        case 'F':  // Remove exercise
             if (exercise != nullptr) {
-                sport->removeExercise(exercise_id);
+                delete sport->removeExercise(exercise_id);
                 cout << "\tExercise removed.\n";
             }
             else {
@@ -322,10 +436,10 @@ void exerciseSwitch() {
                 cout << " doesn't exist.\n";
             }
             break;
-        case 'A':
+        case 'A':  // Write all data about all exercises in this sport
             sport->display();
             break;
-        case 'L':
+        case 'L': // All operations regarding participants in exercise
             if (exercise != nullptr)
                 exerciseSwitchParticipants(exercise);
             else {
@@ -333,7 +447,7 @@ void exerciseSwitch() {
                 cout << " doesn't exist.\n";
             }
             break;
-        case 'R':
+        case 'R': // All operations regarding results of exercise
             if (exercise != nullptr)
                 exerciseSwitchResults(exercise);
             else {
@@ -342,89 +456,77 @@ void exerciseSwitch() {
             }
             break;
         }
+        writeSportsToFile();
     } while (input.at(0) != 'Q');
 }
 
+// case 'L' in exerciseSwitch
 void exerciseSwitchParticipants(Exercise* exercise) {
     // The users choice
     string input;
 
-
-    // Outputfilestream
-    ofstream out;
     // Loop until until input = 'Q'
     do {
-        cout << "\n\t\tParticipants for " << exercise->getName() << ": ";
+        cout << "\n\t\tParticipants for " << *exercise->getName() << ": ";
         cout << "\n\t\tS = Display participants list";
         cout << "\n\t\tN = New participants list";
         cout << "\n\t\tE = Change participants list";
         cout << "\n\t\tF = Remove participants list\n";
-        getChar(input);
+        getString(input, "Make your choice: ", 2);
+        input = toupper(input.at(0));
         switch (input.at(0)) {
-            // Read participant list from file and display
-        case 'S':
-            readParticipantsFromFile(exercise);
+        case 'S':  // Read participant list from file and display
+            exercise->displayParticipants();
             break;
-            // New participant list from user input
-        case 'N': {
-            // TODO - Move to its own function; writeParticipantsToFile(Excercise* exercise)
-            int n;
-            // Keep adding participants until user writes 0 to escape
-            do {
+        case 'N':  // New participant list from user input
+        {
+            newParticipantsList(exercise);
+            break;
+        }
+        case 'E':  // Change participants list
+        {
+            // If resultslist doesn't exist, user can change participant list
+            // Read from file - Edit - Write to file
+            if (exercise->getResultsList()->noOfElements() == 0) {
+                int inp = getInt(0, 1, 2, "0 = Add id\t1 = Delete id: ");
                 // Get the id of the participant the user wants to add
-                n = getInt(0, 10000, 2, "Write id. 0 = Quit: ");
-                // Make sure participant with id -n exists and that it isnt already in participants list
+                int n = getInt(0, 10000, 2, "Write id. 0 = Quit: ");
+                // Make sure participant with id -n exists 
                 if (participants->getParticipant(n) != nullptr) {
                     // Print error if already registered
-                    if (!exercise->addParticipantID(n))
-                        cout << "\t\tAlready exists in list.\n";
+                    if (!inp) {
+                        if (!exercise->addParticipantID(n))
+                            cout << "\t\tAlready exists in list.\n";
+                    }
+                    else if (!exercise->removeParticipantID(n))
+                        cout << "\t\tParticipant isn't in list.\n";
                 }
                 else
                     cout << "\t\tParticipant doesn't exist.\n";
-            } while (n != 0);
-            out = ofstream("participants.txt");
-            // participants_id list
-            List* participants_id = exercise->getParticipantsIDList();
-            // Number of participants in participants_id
-            int num = participants_id->noOfElements();
-            // id of participant
-            int id;
-            // Num element with id that we remove
-            NumElement* ne;
-            // Write the amount of participants to file first
-            out << num << ' ';
-            // Debug
-            cout << "Writing to file: " << participants_id->noOfElements() << endl;
-            // Loops through all participants
-            for (int i = 1; i <= num; i++) {
-                participants_id = exercise->getParticipantsIDList();
-                // Just remove the first element until list is empty
-                ne = (NumElement*)participants_id->removeNo(1);
-                id = ne->getNumber();
-                // Finally we can write the id number of participant to file
-                out << id << ' ';
             }
-            out.close();
+            else
+                cout << "\t\tResults already exist. Can't change participants.\n";
+            // Write our changes to file
+            writeParticipantsToFile();
             break;
         }
-              // If resultslist doesn't exist, user can change participant list
-              // Read from file - Edit - Write to file
-        case 'E':
-            // TODO
-            break;
-            // If resultslist doesn't exist, user can remove participants list
-        case 'F': {
+        case 'F':  // If resultslist doesn't exist, user can remove participants list
+        {
             if (exercise->getResultsList()->noOfElements() == 0) {
-                List* lst = exercise->getParticipantsIDList();
-                for (int i = 0; i < lst->noOfElements(); i++)
-                    lst->removeNo(1);
+                string file_name = *exercise->getName() + "_participants.txt";
+                if (remove(file_name.c_str()) != 0)
+                    cout << "\t\tError deleting file\n";
+                else
+                    cout << "\t\tDeleted " << *exercise->getName() << "_participants.txt\n";
+                removeParticipantsList(exercise);
                 cout << "\t\tParticipants list removed.\n";
             }
             else
-                cout << "\t\tError. Results already exist. Not doing anything\n";
+                cout << "\t\tResults already exist, can't change participants.\n";
             break;
         }
         }
+        writeSportsToFile();
     } while (input.at(0) != 'Q');
 }
 
@@ -432,49 +534,176 @@ void exerciseSwitchResults(Exercise* exercise) {
     // The users choice
     string input;
 
-    // Loop until until input = 'Q'
+    // Loop until input = 'Q'
     do {
-        getChar(input);
+        cout << "\n\t\tResults for " << *exercise->getName() << ": ";
+        cout << "\n\t\tS = Display results list";
+        cout << "\n\t\tN = New resuls list";
+        cout << "\n\t\tF = Remove results list\n";
+        getString(input, "Make your choice: ", 2);
+        input = toupper(input.at(0));
         switch (input.at(0)) {
-        case 'S':
-            // TODO
+        case 'S':  // Read results list and display
+            // Only display if it is successfully read from file
+            exercise->getResultsList()->displayList();
             break;
-        case 'N':
-            // TODO
+        case 'N': // If results are empty ask user to input a new results list
+            if (exercise->getResultsList()->noOfElements() == 0) {
+                newResultsList(exercise, 0); // TODO - Second param is special for every sport
+            }
+            else
+                cout << "\t\tResults list already exists.\n";
             break;
-        case 'F':
-            // TODO
+        case 'F': // Remove resultslist
+        {
+            if (remove("exercise_results.txt") != 0)
+                cout << "\t\tError deleting file\n";
+            else
+                cout << "\t\tDeleted exercise_results.txt\n";
+            List* lst = exercise->getResultsList();
+            while (lst->noOfElements() > 0)
+                delete (Result*)lst->removeNo(1); // Redundant
+            cout << "\t\tResults list removed.\n";
             break;
         }
+        }
+        writeSportsToFile();
     } while (input.at(0) != 'Q');
 }
 
-void readParticipantsFromFile(Exercise* exercise) {
-    // Inputfilestream
-    ifstream in;
-    in = ifstream("participants.txt");
-    // Check if file exists
-    if (!in.is_open())
-        cout << "\t\tCouldn't find file\n";
-    // Just return if participants list starts with a zero (zero participants)
-    if (in.peek() == 0) {
-        cout << "\t\tCouldn't find participants list.\n";
-        return;
-    }
-    // Amount of participants in file
-    int sum;
-    // The current participants unique id
+
+void newParticipantsList(Exercise* exercise) {
     int n;
-    in >> sum;
-    for (int i = 0; i < sum; i++) {
-        in >> n;
+    // Keep adding participants until user writes 0 to escape
+    do {
+        // Get the id of the participant the user wants to add
+        n = getInt(0, 10000, 2, "Write id. 0 = Quit: ");
+        // Make sure participant with id -n exists and that it isnt already in participants list
         if (participants->getParticipant(n) != nullptr) {
-            // Add to list but print error if already registered
+            // Print error if already registered
             if (!exercise->addParticipantID(n))
                 cout << "\t\tAlready exists in list.\n";
         }
         else
             cout << "\t\tParticipant doesn't exist.\n";
-    }
-    exercise->displayParticipants();
+    } while (n != 0);
+}
+
+void removeParticipantsList(Exercise* exercise) {
+    // Loops through all participants and remove first in list until list is empty
+    while (exercise->getParticipantsIDList()->noOfElements() > 0)
+        exercise->getParticipantsIDList()->removeNo(1);
+}
+
+void readNationsFromFile() {
+    in = ifstream("nations.txt");
+    nations->readFromFile(in);
+    in.close();
+}
+
+void readParticipantsFromFile() {
+    in = ifstream("participants.txt");
+    participants->readFromFile(in);
+    in.close();
+}
+
+void readSportsFromFile() {
+    in = ifstream("sports.txt");
+    sports->readFromFile(in);
+    in.close();
+}
+
+void writeNationsToFile() {
+    out = ofstream("nations.txt");
+    nations->writeToFile(out);
+    out.close();
+}
+
+void writeParticipantsToFile()
+{
+    out = ofstream("participants.txt");
+    participants->writeToFile(out);
+    out.close();
+}
+
+void writeSportsToFile()
+{
+    out = ofstream("sports.txt");
+    sports->writeToFile(out);
+    out.close();
+}
+
+// result_data_type decides between sport result formats:
+// 0 = Skiskyting, Langrenn
+// 1 = Skoyter, Alpin, Bob, Skeleton
+// 2 = Aking, Kortbane
+// 3 = Hopp
+// 4 = Kunstlop
+void newResultsList(Exercise* exercise, int result_data_type) {
+    int n;
+    int res;
+    List* results;
+    // Keep adding results until user writes 0 to escape
+    do {
+        // Get the id of the result the user wants to register result for
+        n = getInt(0, 10000, 2, "Write id. 0 = Quit: ");
+        // The results list of this exercise
+        results = exercise->getResultsList();
+        bool inList = false;
+        Result* result_temp;
+        // Loops through results list and checks that id isnt in it already
+        for (int i = 1; i <= results->noOfElements(); i++) {
+            result_temp = (Result*)results->removeNo(i);
+            if (result_temp->getParticipantID() == n) {
+                inList = true;
+                cout << "\t\tParticipant ID found in results list already. Ignoring\n";
+            }
+            // Adding back the elemnt we removed
+            results->add(result_temp);
+        }
+        // Make sure results with id -n exists and that it isnt already in results list
+        if (participants->getParticipant(n) != nullptr && !inList) {
+            res = getInt(0, 7, 2, "Write result (valid input: [7,5,4,3,2,1,0]): ");
+            // 6 is not valid input
+            if (res == 6) {
+                cout << "\t\tInvalid input.\n";
+            }
+            else {
+                // Unlimited results allowed with 0 points
+                if (res != 0 && results->inList(res))
+                    cout << "\t\tThis result is already registered to another participant\n";
+                else {
+                    // Ask for correct data type of result
+                    string data;
+                    switch (result_data_type) {
+                    case 0:  // Min:Sek:Tidel
+                        data = to_string(getInt(0, 59, 2, "Write minute: "));
+                        data += ":" + to_string(getInt(0, 59, 2, "Write second: "));
+                        data += ":" + to_string(getInt(0, 9, 2, "Write second/10: "));
+                        break;
+                    case 1:  // Min:Sek:Hundredel
+                        data = to_string(getInt(0, 59, 2, "Write minute: "));
+                        data += ":" + to_string(getInt(0, 59, 2, "W'rite second: "));
+                        data += ":" + to_string(getInt(0, 99, 2, "Write second/100: "));
+                        break;
+                    case 2:  // Min:Sek:Tusendel
+                        data = to_string(getInt(0, 59, 2, "Write minute: "));
+                        data += ":" + to_string(getInt(0, 59, 2, "Write second: "));
+                        data += ":" + to_string(getInt(0, 999, 2, "Write second/1000: "));
+                        break;
+                    case 3:  // [0-9]
+                        data = to_string(getInt(0, 9, 2, "Write score: "));
+                        break;
+                    case 4:  // [0-99]
+                        data = to_string(getInt(0, 99, 2, "Write score: "));
+                        break;
+                    }
+                    //cout << "\t\tRegistered: " << data << endl;
+                    results->add(new Result(res, n, data));
+                }
+            }
+        }
+        else if (n != 0) // Do not write error when user types 0 to quit
+            cout << "\t\tParticipant doesn't exist or is already in results list\n";
+    } while (n != 0);
 }

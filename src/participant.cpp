@@ -1,8 +1,20 @@
 #include "../include/participant.h"
 #include "../include/utility.h"
+#include "../include/main.h"
 #include <iostream>
 using namespace std;
 
+
+
+Participant::Participant(int n, std::ifstream& in) : NumElement(n) {
+    name = new string();
+    nation_short = new string();
+    getline(in, *name);
+    getline(in, *nation_short);
+    // Add the participant to the right nation
+    nations->getNation(*nation_short)->addParticipantID(number);
+    in >> isFemale;
+}
 
 Participant::Participant(int n) : NumElement(n) {
     name = new string();
@@ -12,6 +24,11 @@ Participant::Participant(int n) : NumElement(n) {
     nation_short = getNationAbbreviation(2);
     // Get gender from user
     isFemale = (getInt(0, 1, 2, "Is the participant a female? ") == 1);
+}
+
+Participant::~Participant() {
+    delete name;
+    delete nation_short;
 }
 
 void Participant::display() {
@@ -35,4 +52,13 @@ string* Participant::getNationName() {
 
 std::string* Participant::getName() {
     return name;
+}
+
+void Participant::writeToFile(ofstream& out) {
+    // Write id first
+    out << number << endl;
+    out << *name << endl;
+    out << *nation_short << endl;
+    // Two endlines between participants for readability
+    out << isFemale << endl << endl;
 }

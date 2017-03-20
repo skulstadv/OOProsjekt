@@ -2,6 +2,7 @@
 #define OOProject_SPORT_H_
 #include "listTool2B.h"
 #include "exercise.h"
+#include <fstream>
 
 
 // The way the sport is scored
@@ -18,12 +19,21 @@ class Sport: public TextElement{
     List* exercises;
 
 public:
+    // Constructor - read from file
+    Sport(std::string s, std::ifstream& in);
+
     // Constructor
     // Create a new sport with unique name -s
     Sport(std::string s);
 
+    // Destructor
+    ~Sport();
+
     // Add exercise to exercises list
     void addExercise(Exercise* exercise);
+
+    // Returns list of exercises
+    List* getExercisesList();
 
     // Get exercise with ID -n in exercises list
     // -return the Exercise
@@ -41,6 +51,9 @@ public:
 
     // Set sport name
     void setSportName(std::string s);
+
+    // Write class to file
+    void writeToFile(std::ofstream& out);
 };
 
 #endif
