@@ -1,9 +1,9 @@
 #ifndef OOProject_NATION_H_
 #define OOProject_NATION_H_
-#include <string>
 #include "listTool2B.h"
 #include "participant.h"
 #include "participants.h"
+#include <string>
 #include <fstream>
 
 // A nation - Contains list of participants and contact info for one person

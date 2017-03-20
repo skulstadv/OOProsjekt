@@ -3,16 +3,12 @@
 #include "../include/participants.h"
 #include "../include/sports.h"
 #include "../include/nations.h"
-#include "../include/medals.h"
 #include "../include/points.h"
 
 // Global variables
 extern Participants* participants;
 extern Sports* sports;
 extern Nations* nations;
-extern Medals* medals;
-extern Points* points;
-
 
 // Prints helpmessage for main switch
 void help();
