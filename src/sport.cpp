@@ -59,6 +59,10 @@ void Sport::addExercise(Exercise* exercise) {
 
 }
 
+List * Sport::getExercisesList() {
+    return exercises;
+}
+
 Exercise* Sport::getExercise(int n) {
     Exercise* exercise = (Exercise*)exercises->remove(n);
     // Add it back to list if its not null before returning it

@@ -61,6 +61,10 @@ string Nation::getName() {
     return text;
 }
 
+std::string Nation::getNameFull() {
+    return *nation_long;
+}
+
 void Nation::display() {
     cout << "\t\tNation abbreviation: " << text << "\n\t\tNation name: ";
     cout << *nation_long << "\n\t\tContact name: " << *contact_name;

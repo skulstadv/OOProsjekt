@@ -50,8 +50,11 @@ public:
     // Remove participant with ID -n from participants list
     void removeParticipantID(int n);
 
-    // -return the nation_long name of this nation
+    // Returns the nation_long name of this nation
     std::string getName();
+
+    // Returns full name
+    std::string getNameFull();
 
     // Display this nations data excluding participants
     void display();

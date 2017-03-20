@@ -17,8 +17,8 @@ using namespace std;
 Participants* participants = new Participants();
 Sports* sports = new Sports();
 Nations* nations = new Nations();
-Medals* medals = new Medals();
-Points* points = new Points();
+//Medals* medals = new Medals();
+//Points* points = new Points();
 ofstream out;
 ifstream in;
 
@@ -42,13 +42,120 @@ int main() {
             sportSwitch(); break;
         case 'O':
             exerciseSwitch(); break;
+        case 'M':
+            displayMedals(); break;
+        case 'P':
+            displayPoints(); break;
         }
     } while (input.at(0) != 'Q');
+}
+
+void displayMedals() {
+    readNationsFromFile();
+    readParticipantsFromFile();
+    readSportsFromFile();
+    Nation* nation;
+    Sport* sport;
+    Exercise* exercise;
+    Result* result;
+    string name;
+    int gold = 0;
+    int silver = 0;
+    int bronze = 0;
+
+    // Loop through all nations displaying medals
+    for (int i = 1; i <= nations->getList()->noOfElements(); i++) {
+        nation = (Nation*)nations->getList()->removeNo(i);
+        nations->getList()->add(nation);
+        // Counting through sports and exercises
+        for (int i = 1; i <= sports->getList()->noOfElements(); i++) {
+            sport = (Sport*)sports->getList()->removeNo(i);
+            sports->getList()->add(sport);
+            // Count through all exercises
+            for (int i = 1; i <= sport->getExercisesList()->noOfElements(); i++) {
+                exercise = (Exercise*)sport->getExercisesList()->removeNo(i);
+                sport->getExercisesList()->add(exercise);
+                // Count through all results and check for match with nation
+                for (int i = 1; i <= exercise->getResultsList()->noOfElements(); i++) {
+                    result = (Result*)exercise->getResultsList()->removeNo(i);
+                    exercise->getResultsList()->add(result);
+                    // Temp for name
+                    name = *participants->getParticipant(result->getParticipantID())->getNationName();
+                    // If its the right nation
+                    if (name.compare(nation->getName()) == 0) {
+                        // Check if gold silver or bronze
+                        if (result->getNumber() == 7)
+                            gold++;
+                        if (result->getNumber() == 5)
+                            silver++;
+                        if (result->getNumber() == 4)
+                            bronze++;
+                    }
+                }
+            }
+        }
+        // Fixing output if points
+        if (gold > 0 || silver > 0 || bronze > 0) {
+            cout << nation->getNameFull() << " medal statistics:\n\tGold:\t" << gold << endl;
+            cout << "\tSilver:\t" << silver << endl;
+            cout << "\tBronze:\t" << bronze << endl << endl;
+        }
+        // Reset counters
+        gold = 0;
+        silver = 0;
+        bronze = 0;
+    }
+}
+
+void displayPoints() {
+    readNationsFromFile();
+    readParticipantsFromFile();
+    readSportsFromFile();
+    Nation* nation;
+    Sport* sport;
+    Exercise* exercise;
+    Result* result;
+    string name;
+    int points = 0;
+    // Loop through all nations displaying medals
+    for (int i = 1; i <= nations->getList()->noOfElements(); i++) {
+        nation = (Nation*)nations->getList()->removeNo(i);
+        nations->getList()->add(nation);
+        // Counting through sports and exercises
+        for (int i = 1; i <= sports->getList()->noOfElements(); i++) {
+            sport = (Sport*)sports->getList()->removeNo(i);
+            sports->getList()->add(sport);
+            // Count through all exercises
+            for (int i = 1; i <= sport->getExercisesList()->noOfElements(); i++) {
+                exercise = (Exercise*)sport->getExercisesList()->removeNo(i);
+                sport->getExercisesList()->add(exercise);
+                // Count through all results and check for match with nation
+                for (int i = 1; i <= exercise->getResultsList()->noOfElements(); i++) {
+                    result = (Result*)exercise->getResultsList()->removeNo(i);
+                    exercise->getResultsList()->add(result);
+                    // Temp for name
+                    name = *participants->getParticipant(result->getParticipantID())->getNationName();
+                    // If its the right nation
+                    if (name.compare(nation->getName()) == 0) {
+                        // Just add the points of this result as its the right nation
+                        points += result->getNumber();
+                    }
+                }
+            }
+        }
+        if (points > 0) {
+            // Fixing output if points
+            cout << nation->getNameFull() << " points statistics:\n\tPoints:\t" << points << endl;
+        }
+        // Reset counters
+        points = 0;
+    }
 }
 
 
 void help() {
     cout << "\nN = Nation\nD = Participant\nG = Sport\nO = Exercise";
+    cout << "\nM = Medals statistics\nP = Points statistics";
     cout << "\nQ = Quit\n\n";
 }
 
@@ -596,7 +703,7 @@ void newResultsList(Exercise* exercise, int result_data_type) {
                 }
             }
         }
-        else if(n != 0) // Do not write error when user types 0 to quit
+        else if (n != 0) // Do not write error when user types 0 to quit
             cout << "\t\tParticipant doesn't exist or is already in results list\n";
     } while (n != 0);
 }

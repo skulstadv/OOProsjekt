@@ -32,6 +32,9 @@ public:
     // Add exercise to exercises list
     void addExercise(Exercise* exercise);
 
+    // Returns list of exercises
+    List* getExercisesList();
+
     // Get exercise with ID -n in exercises list
     // -return the Exercise
     Exercise* getExercise(int n);

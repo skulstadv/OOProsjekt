@@ -63,4 +63,9 @@ void writeParticipantsToFile();
 // Write sports from file  
 void writeSportsToFile();
 
+// Display all medals of each nation
+void displayMedals();
+
+// Display all points of each nation
+void displayPoints();
 #endif
